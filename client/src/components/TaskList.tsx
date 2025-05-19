@@ -29,7 +29,7 @@ export default function TaskList({
     <div className="list-container">
       <TaskHeader />
       {listItems}
-      <TaskForm />
+      <TaskForm onCreate={onCreate} />
     </div>
   );
 }

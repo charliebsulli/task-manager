@@ -1,7 +1,23 @@
-export default function TaskForm() {
+import { useState } from "react";
+import { Task } from "../../../shared/types";
+
+export default function TaskForm({
+  onCreate,
+}: {
+  onCreate: (newTask: Task) => void;
+}) {
+  const [taskName, setTaskName] = useState("");
+  const [date, setDate] = useState("");
+  // how to handle state for select menu?
   return (
-    <h1 className="task-header">
-      This defines a task form where new tasks are added.
-    </h1>
+    <form className="task-form">
+      <h1>Create a new task.</h1>
+      <input type="text" placeholder="Task..."></input>
+      <input type="text" placeholder="Due date..."></input>
+      <select>
+        <option>Pass down tags as props.</option>
+      </select>
+      <button type="button">Add task</button>
+    </form>
   );
 }

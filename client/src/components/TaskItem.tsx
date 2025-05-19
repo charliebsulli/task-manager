@@ -11,7 +11,7 @@ function Checkbox({
     <input
       className="checkbox"
       type="checkbox"
-      defaultChecked={status}
+      checked={status}
       onChange={onStatusChange}
     />
   );
