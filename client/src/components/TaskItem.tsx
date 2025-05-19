@@ -1,7 +1,7 @@
 import { Task } from "../../../shared/types";
 
 function Checkbox({ status }: { status: boolean }) {
-  return <input className="checkbox" type="checkbox" />;
+  return <input className="checkbox" type="checkbox" checked={status} />;
 }
 
 function DeleteButton() {
@@ -12,11 +12,28 @@ function DeleteButton() {
   );
 }
 
+function DueDateTime({ dueDateTime }: { dueDateTime: string }) {
+  return <p className="due-date">{dueDateTime}</p>;
+}
+
+function TagList({ tags }: { tags: string[] }) {
+  const listTags = tags.map((tag, idx) => <Tag key={idx} tag={tag} />);
+  return <div className="tags-container">{listTags}</div>;
+}
+
+function Tag({ tag }: { tag: string }) {
+  return <p className="tag">{tag}</p>;
+}
+
 export default function TaskItem({ task }: { task: Task }) {
   return (
     <div className="task-container">
       <Checkbox status={task.complete} />
-      <h1>{task.name}</h1>
+      <div className="tagged-task">
+        <p className="task-name">{task.name}</p>
+        <TagList tags={task.tags} />
+      </div>
+      <DueDateTime dueDateTime={task.due} />
       <DeleteButton />
     </div>
   );

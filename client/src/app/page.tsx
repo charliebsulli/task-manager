@@ -13,7 +13,7 @@ const tasks: Task[] = [
     name: "Wash dishes",
     complete: false,
     tags: ["red", "green"],
-    due: "duedate",
+    due: "4/13",
     user: 0,
   },
   {
@@ -21,7 +21,7 @@ const tasks: Task[] = [
     name: "Buy groceries",
     complete: true,
     tags: ["blue"],
-    due: "duedate",
+    due: "5/12",
     user: 0,
   },
   {
@@ -29,7 +29,7 @@ const tasks: Task[] = [
     name: "Write report",
     complete: false,
     tags: ["yellow", "green"],
-    due: "duedate",
+    due: "10/25",
     user: 0,
   },
   {
@@ -37,7 +37,7 @@ const tasks: Task[] = [
     name: "Call plumber",
     complete: true,
     tags: [],
-    due: "duedate",
+    due: "11/11",
     user: 0,
   },
   {
@@ -45,7 +45,7 @@ const tasks: Task[] = [
     name: "Schedule meeting",
     complete: false,
     tags: ["purple"],
-    due: "duedate",
+    due: "11/11",
     user: 0,
   },
 ];

@@ -12,6 +12,7 @@
 }
 
 .list-container {
+  width: 400px;
   height: 300px;
   background-color: greenyellow;
 }
@@ -22,10 +23,10 @@
 }
 
 .task-container {
-  display: flex;
-  flex-direction: row;
+  display: grid;
   width: 400px;
   margin-top: 5px;
+  grid-template-columns: 30px 2fr 1fr 50px;
 }
 
 .checkbox {
@@ -44,4 +45,19 @@
 
 .delete:hover {
   background-color: tomato;
+}
+
+.tagged-task {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.tags-container {
+  display: flex;
+  gap: 0.1rem;
+}
+
+.tag {
+  background-color: white;
+  color: black;
 }
