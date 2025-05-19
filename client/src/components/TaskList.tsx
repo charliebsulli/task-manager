@@ -7,15 +7,22 @@ import "./components.css";
 export default function TaskList({
   tasks,
   onDelete,
+  onStatusChange,
+  onEdit,
+  onCreate,
 }: {
   tasks: Task[];
   onDelete: (id: number) => void;
+  onStatusChange: (id: number) => void;
+  onEdit: (id: number, newTask: Task) => void;
+  onCreate: (newTask: Task) => void;
 }) {
   const listItems = tasks.map((task) => (
     <TaskItem
       key={task.id}
       task={task}
       onDelete={() => onDelete(task.id)}
+      onStatusChange={() => onStatusChange(task.id)}
     ></TaskItem>
   ));
   return (
