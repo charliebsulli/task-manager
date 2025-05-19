@@ -2,10 +2,10 @@ import FilterableTaskList from "@/components/FilterableTaskList";
 import { Task } from "../../../shared/types";
 
 export default function Home() {
-  return <FilterableTaskList tasks={tasks}></FilterableTaskList>;
+  return <FilterableTaskList startingTasks={tasks}></FilterableTaskList>;
 }
-
 // Temporary tasks until API connected
+// For now, equivalent to fetching all the tasks for user 0
 
 const tasks: Task[] = [
   {

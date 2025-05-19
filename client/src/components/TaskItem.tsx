@@ -4,9 +4,9 @@ function Checkbox({ status }: { status: boolean }) {
   return <input className="checkbox" type="checkbox" checked={status} />;
 }
 
-function DeleteButton() {
+function DeleteButton({ onClick }: { onClick: () => void }) {
   return (
-    <button type="button" className="delete">
+    <button type="button" className="delete" onClick={onClick}>
       Delete
     </button>
   );
@@ -25,7 +25,13 @@ function Tag({ tag }: { tag: string }) {
   return <p className="tag">{tag}</p>;
 }
 
-export default function TaskItem({ task }: { task: Task }) {
+export default function TaskItem({
+  task,
+  onDelete,
+}: {
+  task: Task;
+  onDelete: () => void;
+}) {
   return (
     <div className="task-container">
       <Checkbox status={task.complete} />
@@ -34,7 +40,7 @@ export default function TaskItem({ task }: { task: Task }) {
         <TagList tags={task.tags} />
       </div>
       <DueDateTime dueDateTime={task.due} />
-      <DeleteButton />
+      <DeleteButton onClick={onDelete} />
     </div>
   );
 }
