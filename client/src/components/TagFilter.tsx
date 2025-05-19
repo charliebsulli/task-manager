@@ -1,3 +1,7 @@
 export default function TagFilter() {
-  return <h1>This is the tag filter.</h1>;
+  return (
+    <div className="filters-container">
+      <p>Filtering tasks by tag will be handled here.</p>
+    </div>
+  );
 }

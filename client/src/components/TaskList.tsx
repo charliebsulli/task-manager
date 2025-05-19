@@ -9,7 +9,7 @@ export default function TaskList({ tasks }: { tasks: Task[] }) {
     <TaskItem key={task.id} task={task}></TaskItem>
   ));
   return (
-    <div>
+    <div className="list-container">
       <TaskHeader />
       {listItems}
       <TaskForm />

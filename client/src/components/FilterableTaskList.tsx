@@ -6,11 +6,9 @@ import "./components.css";
 
 export default function FilterableTaskList({ tasks }: { tasks: Task[] }) {
   return (
-    <div className="fullscreen">
-      <div className="container">
-        <TagFilter />
-        <TaskList tasks={tasks} />
-      </div>
+    <div className="container">
+      <TagFilter />
+      <TaskList tasks={tasks} />
     </div>
   );
 }
