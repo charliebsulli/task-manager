@@ -31,10 +31,21 @@
 
 .task-form {
   margin-left: 5px;
+  margin-right: 5px;
   margin-top: 5px;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+}
+
+.create-task {
+  background-color: white;
+  color: aquamarine;
+  border-radius: 5px;
+}
+
+.create-task:hover {
+  background-color: grey;
 }
 
 .checkbox {

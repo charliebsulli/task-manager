@@ -15,7 +15,7 @@ export default function TaskList({
   onDelete: (id: number) => void;
   onStatusChange: (id: number) => void;
   onEdit: (id: number, newTask: Task) => void;
-  onCreate: (newTask: Task) => void;
+  onCreate: (taskName: string, date: string, tags: string[]) => void;
 }) {
   const listItems = tasks.map((task) => (
     <TaskItem

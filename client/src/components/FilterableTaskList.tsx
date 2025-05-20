@@ -57,11 +57,20 @@ export default function FilterableTaskList({
     setTasks(newTasks);
   }
 
-  function handleCreate(newTask: Task) {
-    // make API request to add
-    // I think the database will have to make sure id is unique
+  function handleCreate(taskName: string, date: string, tags: string[]) {
+    // try to construct a task from this data
+    let newTask: Task = {
+      id: 8, // change to ensure unique ID
+      name: taskName,
+      complete: false,
+      tags: tags,
+      due: date,
+      user: 0,
+    };
 
-    // if is succeeds, add this task
+    // make API request to add
+
+    // if is succeeds, add this task to local state
     let newTasks = [...tasks, newTask];
     setTasks(newTasks);
   }
