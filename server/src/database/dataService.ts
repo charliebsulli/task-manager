@@ -47,6 +47,8 @@ const tasks: Task[] = [
   },
 ];
 
+// add get all Tasks (return a list)
+
 // get Task by id
 export async function getTask(id: number) {
   for (let i = 0; i < tasks.length; i++) {
@@ -58,6 +60,7 @@ export async function getTask(id: number) {
 }
 
 // edit Task by id
+// consider passing id too for uniformity - just extract from task
 export async function editTask(newTask: Task) {
   const id = newTask.id;
   for (let i = 0; i < tasks.length; i++) {

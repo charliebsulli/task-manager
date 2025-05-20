@@ -1,4 +1,6 @@
-import { Task } from "../../../shared/types";
+import { useState } from "react";
+import { Task, TaskParams } from "../../../shared/types";
+import TaskForm from "./TaskForm";
 
 function Checkbox({
   status,
@@ -25,6 +27,14 @@ function DeleteButton({ onClick }: { onClick: () => void }) {
   );
 }
 
+function EditButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button type="button" className="edit" onClick={onClick}>
+      Edit
+    </button>
+  );
+}
+
 function DueDateTime({ dueDateTime }: { dueDateTime: string }) {
   return <p className="due-date">{dueDateTime}</p>;
 }
@@ -42,20 +52,35 @@ export default function TaskItem({
   task,
   onDelete,
   onStatusChange,
+  onEditSubmit,
 }: {
   task: Task;
   onDelete: () => void;
   onStatusChange: () => void;
+  onEditSubmit: (newParams: TaskParams) => void;
 }) {
+  const [editing, setEditing] = useState(false);
+
+  function handleEditClick() {
+    setEditing(!editing);
+
+    // if we're hiding the form it should reset
+    // the state of the form without changing anything
+  }
+
   return (
-    <div className="task-container">
-      <Checkbox status={task.complete} onStatusChange={onStatusChange} />
-      <div className="tagged-task">
-        <p className="task-name">{task.name}</p>
-        <TagList tags={task.tags} />
+    <>
+      <div className="task-container">
+        <Checkbox status={task.complete} onStatusChange={onStatusChange} />
+        <div className="tagged-task">
+          <p className="task-name">{task.name}</p>
+          <TagList tags={task.tags} />
+        </div>
+        <DueDateTime dueDateTime={task.due} />
+        <EditButton onClick={handleEditClick} />
+        <DeleteButton onClick={onDelete} />
       </div>
-      <DueDateTime dueDateTime={task.due} />
-      <DeleteButton onClick={onDelete} />
-    </div>
+      {editing && <TaskForm onCreate={onEditSubmit} />}
+    </>
   );
 }

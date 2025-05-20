@@ -26,7 +26,7 @@
   display: grid;
   width: 400px;
   margin-top: 5px;
-  grid-template-columns: 30px 2fr 1fr 50px;
+  grid-template-columns: 30px 2fr 1fr 50px 50px;
 }
 
 .task-form {
@@ -52,6 +52,17 @@
   cursor: pointer;
   margin-left: 5px;
   margin-right: 5px;
+}
+
+.edit {
+  color: yellowgreen;
+  cursor: pointer;
+  margin-right: 15px;
+  margin-left: auto;
+}
+
+.edit:hover {
+  color: white;
 }
 
 .delete {

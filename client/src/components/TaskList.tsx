@@ -1,4 +1,4 @@
-import { Task } from "../../../shared/types";
+import { Task, TaskParams } from "../../../shared/types";
 import TaskHeader from "./TaskHeader";
 import TaskItem from "./TaskItem";
 import TaskForm from "./TaskForm";
@@ -15,7 +15,7 @@ export default function TaskList({
   onDelete: (id: number) => void;
   onStatusChange: (id: number) => void;
   onEdit: (id: number, newTask: Task) => void;
-  onCreate: (taskName: string, date: string, tags: string[]) => void;
+  onCreate: (taskParams: TaskParams) => void;
 }) {
   const listItems = tasks.map((task) => (
     <TaskItem
@@ -23,6 +23,17 @@ export default function TaskList({
       task={task}
       onDelete={() => onDelete(task.id)}
       onStatusChange={() => onStatusChange(task.id)}
+      onEditSubmit={(newParams: TaskParams) => {
+        const newTask: Task = {
+          id: task.id,
+          name: newParams.name,
+          complete: task.complete,
+          tags: newParams.tags,
+          due: newParams.due,
+          user: task.user,
+        };
+        onEdit(task.id, newTask);
+      }}
     ></TaskItem>
   ));
   return (

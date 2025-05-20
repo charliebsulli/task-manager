@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Task } from "../../../shared/types";
+import { Task, TaskParams } from "../../../shared/types";
 import TagFilter from "./TagFilter";
 import TaskList from "./TaskList";
 
@@ -57,20 +57,20 @@ export default function FilterableTaskList({
     setTasks(newTasks);
   }
 
-  function handleCreate(taskName: string, date: string, tags: string[]) {
+  function handleCreate({ name, tags, due }: TaskParams) {
     // try to construct a task from this data
     let newTask: Task = {
       id: 8, // change to ensure unique ID
-      name: taskName,
+      name: name,
       complete: false,
       tags: tags,
-      due: date,
+      due: due,
       user: 0,
     };
 
     // make API request to add
 
-    // if is succeeds, add this task to local state
+    // if it succeeds, add this task to local state
     let newTasks = [...tasks, newTask];
     setTasks(newTasks);
   }

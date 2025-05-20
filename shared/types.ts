@@ -10,3 +10,9 @@ export interface Task {
   due: string;
   user: number;
 }
+
+export interface TaskParams {
+  name: string;
+  tags: string[];
+  due: string;
+}

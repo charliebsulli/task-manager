@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Task } from "../../../shared/types";
+import { Task, TaskParams } from "../../../shared/types";
 
 export default function TaskForm({
   onCreate,
 }: {
-  onCreate: (taskName: string, date: string, tags: string[]) => void;
+  onCreate: (newParams: TaskParams) => void;
 }) {
   const [taskName, setTaskName] = useState("");
   const [date, setDate] = useState("");
@@ -19,7 +19,12 @@ export default function TaskForm({
   }
 
   function handleCreateClick() {
-    onCreate(taskName, date, []);
+    let params: TaskParams = {
+      name: taskName,
+      tags: [],
+      due: date,
+    };
+    onCreate(params);
     setTaskName("");
     setDate("");
   }
@@ -43,7 +48,7 @@ export default function TaskForm({
         <option>Pass down tags as props.</option>
       </select>
       <button type="button" className="create-task" onClick={handleCreateClick}>
-        Add task
+        Submit
       </button>
     </form>
   );
