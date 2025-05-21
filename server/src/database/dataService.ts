@@ -48,6 +48,9 @@ const tasks: Task[] = [
 ];
 
 // add get all Tasks (return a list)
+export async function getTasks() {
+  return tasks;
+}
 
 // get Task by id
 export async function getTask(id: number) {

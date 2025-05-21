@@ -4,6 +4,7 @@ import {
   editTask,
   createTask,
   deleteTask,
+  getTasks,
 } from "./database/dataService";
 const app = express();
 const port = 3001;
@@ -15,6 +16,9 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // API routes
+app.get("/api/", (req: Request, res: Response) => {
+  getTasks().then((result) => res.send(result));
+});
 
 // get Task
 app.get("/api/:taskId", (req: Request, res: Response) => {
