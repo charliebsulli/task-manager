@@ -41,7 +41,6 @@ export default function FilterableTaskList({
       }
     }
     setTasks(newTasks);
-    console.log("status update");
   }
 
   function handleEdit(id: number, newTask: Task) {
