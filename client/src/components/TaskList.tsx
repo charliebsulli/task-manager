@@ -7,22 +7,31 @@ import "./components.css";
 export default function TaskList({
   tasks,
   onDelete,
-  onStatusChange,
   onEdit,
   onCreate,
 }: {
   tasks: Task[];
   onDelete: (id: number) => void;
-  onStatusChange: (id: number) => void;
   onEdit: (id: number, newTask: Task) => void;
   onCreate: (taskParams: TaskParams) => void;
 }) {
+  // maybe pull the status change/edit submit functions out to simplify list items
   const listItems = tasks.map((task) => (
     <TaskItem
       key={task.id}
       task={task}
       onDelete={() => onDelete(task.id)}
-      onStatusChange={() => onStatusChange(task.id)}
+      onStatusChange={() => {
+        const newTask: Task = {
+          id: task.id,
+          name: task.name,
+          complete: !task.complete,
+          tags: task.tags,
+          due: task.due,
+          user: task.user,
+        };
+        onEdit(task.id, newTask);
+      }}
       onEditSubmit={(newParams: TaskParams) => {
         const newTask: Task = {
           id: task.id,

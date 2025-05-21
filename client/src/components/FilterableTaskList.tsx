@@ -5,7 +5,11 @@ import { Task, TaskParams } from "../../../shared/types";
 import TagFilter from "./TagFilter";
 import TaskList from "./TaskList";
 
+import { useCreateTask } from "@/api/create-task";
+
 import "./components.css";
+import { useDeleteTask } from "@/api/delete-task";
+import { useUpdateTask } from "@/api/update-task";
 
 export default function FilterableTaskList({
   startingTasks,
@@ -16,48 +20,49 @@ export default function FilterableTaskList({
   // the tasks are ONLY stored here, and passed down as props to the rest of the components
   const [tasks, setTasks] = useState(startingTasks);
 
+  const createMutation = useCreateTask();
+  const deleteMutation = useDeleteTask();
+  const updateMutation = useUpdateTask();
+
   function handleDelete(id: number) {
     // make API request to delete
-
-    // if it succeeds, delete the task from local state
-    let newTasks = [...tasks];
-    for (let i = 0; i < newTasks.length; i++) {
-      if (newTasks[i].id == id) {
-        newTasks.splice(i, 1);
-      }
-    }
-    setTasks(newTasks);
-  }
-
-  function handleStatusChange(id: number) {
-    // triggered by clicking checkbox
-    // make API request to edit
-
-    // if it succeeds, edit the task locally
-    let newTasks = [...tasks];
-    for (let i = 0; i < newTasks.length; i++) {
-      if (newTasks[i].id == id) {
-        newTasks[i].complete = !newTasks[i].complete;
-      }
-    }
-    setTasks(newTasks);
+    deleteMutation.mutate(id, {
+      onSuccess: () => {
+        // if it succeeds, delete the task from local state
+        let newTasks = [...tasks];
+        for (let i = 0; i < newTasks.length; i++) {
+          if (newTasks[i].id == id) {
+            newTasks.splice(i, 1);
+          }
+        }
+        setTasks(newTasks);
+      },
+      onError: (error) => {
+        console.log(error.message);
+      },
+    });
   }
 
   function handleEdit(id: number, newTask: Task) {
     // make API request to edit
-
-    // if it succeeds, update local state of task
-    let newTasks = [...tasks];
-    for (let i = 0; i < newTasks.length; i++) {
-      if (newTasks[i].id == id) {
-        newTasks[i] = newTask;
-      }
-    }
-    setTasks(newTasks);
+    updateMutation.mutate(newTask, {
+      onSuccess: () => {
+        // if it succeeds, update local state of task
+        let newTasks = [...tasks];
+        for (let i = 0; i < newTasks.length; i++) {
+          if (newTasks[i].id == id) {
+            newTasks[i] = newTask;
+          }
+        }
+        setTasks(newTasks);
+      },
+      onError: (error) => {
+        console.log(error.message);
+      },
+    });
   }
 
   function handleCreate({ name, tags, due }: TaskParams) {
-    // try to construct a task from this data
     let newTask: Task = {
       id: 8, // change to ensure unique ID
       name: name,
@@ -67,11 +72,17 @@ export default function FilterableTaskList({
       user: 0,
     };
 
-    // make API request to add
-
-    // if it succeeds, add this task to local state
-    let newTasks = [...tasks, newTask];
-    setTasks(newTasks);
+    // make API request to create
+    createMutation.mutate(newTask, {
+      onSuccess: () => {
+        // if it succeeds, add this task to local state
+        let newTasks = [...tasks, newTask];
+        setTasks(newTasks);
+      },
+      onError: (error) => {
+        console.log(error.message);
+      },
+    });
   }
 
   return (
@@ -80,7 +91,6 @@ export default function FilterableTaskList({
       <TaskList
         tasks={tasks}
         onDelete={handleDelete}
-        onStatusChange={handleStatusChange}
         onEdit={handleEdit}
         onCreate={handleCreate}
       />
