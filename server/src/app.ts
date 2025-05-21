@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import {
   getTask,
   editTask,
@@ -6,14 +6,18 @@ import {
   deleteTask,
   getTasks,
 } from "./database/dataService";
+import "dotenv/config";
+import cors from "cors";
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 
 app.use(express.json());
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
-});
 
 // API routes
 app.get("/api/", (req: Request, res: Response) => {
@@ -41,5 +45,5 @@ app.delete("/api/:taskId", (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Tasks API listening on port ${port}`);
 });
