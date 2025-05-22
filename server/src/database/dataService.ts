@@ -62,7 +62,10 @@ export async function getTasks() {
 // edit Task by id
 export async function editTask(newTask: Task) {
   const query = { _id: new ObjectId(newTask._id) };
-  const replacement = newTask;
+  const replacement = {
+    ...newTask,
+    _id: new ObjectId(newTask._id),
+  };
   const result = await tasksCollection.replaceOne(query, replacement);
   return result; // may have to parse result
 }
