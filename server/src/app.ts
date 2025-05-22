@@ -26,8 +26,8 @@ app.get("/api/", (req: Request, res: Response) => {
 });
 
 // edit Task
-app.put("/api/", (req: Request, res: Response) => {
-  editTask(req.body).then((result) => res.send(result));
+app.put("/api/:_id", (req: Request, res: Response) => {
+  editTask(req.params._id, req.body).then((result) => res.send(result));
 });
 
 // create Task
