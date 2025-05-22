@@ -47,7 +47,7 @@ const tasks: Task[] = [
 const uri = process.env.DB_CONNECTION_STRING || "mongodb://127.0.0.1";
 const client = new MongoClient(uri);
 
-const databaseName = process.env.DB_NAME || "test_db";
+const databaseName = process.env.DB_NAME || "test";
 const database = client.db(databaseName);
 
 const tasksCollection = database.collection("tasks");
@@ -75,8 +75,12 @@ export async function createTask(newTask: Task) {
 }
 
 // delete Task by id
-export async function deleteTask(task: Task) {
-  const task_id = { _id: new ObjectId(task._id) };
-  const result = tasksCollection.deleteOne(task_id);
+export async function deleteTask(_id: string) {
+  console.log("id passed to deleteTask in dataService: ");
+  console.log(_id);
+  const filter = { _id: new ObjectId(_id) };
+  console.log("filter before deleteOne called");
+  console.log(filter);
+  const result = tasksCollection.deleteOne(filter);
   return result;
 }

@@ -36,8 +36,8 @@ app.post("/api/", (req: Request, res: Response) => {
 });
 
 // delete Task
-app.delete("/api/", (req: Request, res: Response) => {
-  deleteTask(req.body).then((result) => res.send(result));
+app.delete("/api/:_id", (req: Request, res: Response) => {
+  deleteTask(req.params._id).then((result) => res.send(result));
 });
 
 app.listen(port, () => {

@@ -26,7 +26,7 @@ export default function FilterableTaskList({
 
   function handleDelete(task: Task) {
     // make API request to delete
-    deleteMutation.mutate(task, {
+    deleteMutation.mutate(task._id, {
       onSuccess: () => {
         // if it succeeds, delete the task from local state
         let newTasks = [...tasks];

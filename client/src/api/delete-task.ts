@@ -2,10 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 import { api } from "./api-client";
 import { Task } from "../../../shared/types";
 
-export const deleteTask = (task: Task) => {
-  return api.delete("/api");
+export const deleteTask = (id: string) => {
+  return api.delete("/api/" + id);
 };
 
 export const useDeleteTask = () => {
-  return useMutation({ mutationFn: (task: Task) => deleteTask(task) });
+  return useMutation({ mutationFn: (id: string) => deleteTask(id) });
 };
