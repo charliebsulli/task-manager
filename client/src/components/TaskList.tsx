@@ -11,37 +11,30 @@ export default function TaskList({
   onCreate,
 }: {
   tasks: Task[];
-  onDelete: (id: number) => void;
-  onEdit: (id: number, newTask: Task) => void;
+  onDelete: (task: Task) => void;
+  onEdit: (_id: string, newTask: Task) => void;
   onCreate: (taskParams: TaskParams) => void;
 }) {
-  // maybe pull the status change/edit submit functions out to simplify list items
   const listItems = tasks.map((task) => (
     <TaskItem
-      key={task.id}
+      key={task._id}
       task={task}
-      onDelete={() => onDelete(task.id)}
+      onDelete={() => onDelete(task)}
       onStatusChange={() => {
         const newTask: Task = {
-          id: task.id,
-          name: task.name,
+          ...task,
           complete: !task.complete,
-          tags: task.tags,
-          due: task.due,
-          user: task.user,
         };
-        onEdit(task.id, newTask);
+        onEdit(task._id, newTask);
       }}
       onEditSubmit={(newParams: TaskParams) => {
         const newTask: Task = {
-          id: task.id,
+          ...task,
           name: newParams.name,
-          complete: task.complete,
           tags: newParams.tags,
           due: newParams.due,
-          user: task.user,
         };
-        onEdit(task.id, newTask);
+        onEdit(task._id, newTask);
       }}
     ></TaskItem>
   ));

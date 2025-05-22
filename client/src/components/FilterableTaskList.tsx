@@ -24,14 +24,14 @@ export default function FilterableTaskList({
   const deleteMutation = useDeleteTask();
   const updateMutation = useUpdateTask();
 
-  function handleDelete(id: number) {
+  function handleDelete(task: Task) {
     // make API request to delete
-    deleteMutation.mutate(id, {
+    deleteMutation.mutate(task, {
       onSuccess: () => {
         // if it succeeds, delete the task from local state
         let newTasks = [...tasks];
         for (let i = 0; i < newTasks.length; i++) {
-          if (newTasks[i].id == id) {
+          if (newTasks[i]._id === task._id) {
             newTasks.splice(i, 1);
           }
         }
@@ -43,14 +43,14 @@ export default function FilterableTaskList({
     });
   }
 
-  function handleEdit(id: number, newTask: Task) {
+  function handleEdit(_id: string, newTask: Task) {
     // make API request to edit
     updateMutation.mutate(newTask, {
       onSuccess: () => {
         // if it succeeds, update local state of task
         let newTasks = [...tasks];
         for (let i = 0; i < newTasks.length; i++) {
-          if (newTasks[i].id == id) {
+          if (newTasks[i]._id === _id) {
             newTasks[i] = newTask;
           }
         }
@@ -63,8 +63,8 @@ export default function FilterableTaskList({
   }
 
   function handleCreate({ name, tags, due }: TaskParams) {
-    let newTask: Task = {
-      id: 8, // change to ensure unique ID
+    let newTask = {
+      _id: "temp", // DB will generate _id
       name: name,
       complete: false,
       tags: tags,
@@ -74,8 +74,14 @@ export default function FilterableTaskList({
 
     // make API request to create
     createMutation.mutate(newTask, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         // if it succeeds, add this task to local state
+        // first, replace with _id assigned by DB
+        const newId = data.data;
+        newTask = {
+          ...newTask,
+          _id: newId,
+        };
         let newTasks = [...tasks, newTask];
         setTasks(newTasks);
       },

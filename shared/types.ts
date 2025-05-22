@@ -3,7 +3,7 @@ export interface User {
 }
 
 export interface Task {
-  id: number;
+  _id: string;
   name: string;
   complete: boolean;
   tags: string[];
