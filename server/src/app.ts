@@ -1,10 +1,4 @@
-import express, { Request, Response } from "express";
-import {
-  editTask,
-  createTask,
-  deleteTask,
-  getTasks,
-} from "./database/dataService";
+import express from "express";
 import tasks from "./routes/tasks";
 import "dotenv/config";
 import cors from "cors";
@@ -18,7 +12,7 @@ app.use(
 );
 
 // API routes
-app.use("/api", tasks);
+app.use("/api/tasks", tasks);
 
 app.listen(port, () => {
   console.log(`Tasks API listening on port ${port}`);

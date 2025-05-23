@@ -3,7 +3,7 @@ import { api } from "./api-client";
 import { Task } from "../../../shared/types";
 
 export const deleteTask = (id: string) => {
-  return api.delete("/api/" + id);
+  return api.delete("/api/tasks/" + id);
 };
 
 export const useDeleteTask = () => {

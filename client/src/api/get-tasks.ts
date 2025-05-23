@@ -3,7 +3,7 @@ import { api } from "./api-client";
 import { Task } from "../../../shared/types";
 
 export const getTasks = () => {
-  return api.get("/api/");
+  return api.get("/api/tasks");
 };
 
 export const getTasksQueryOptions = () => {

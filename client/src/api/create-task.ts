@@ -3,7 +3,7 @@ import { api } from "./api-client";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 
 export const createTask = (newTask: Task) => {
-  return api.post("/api", newTask);
+  return api.post("/api/tasks", newTask);
 };
 
 export const useCreateTask = () => {
