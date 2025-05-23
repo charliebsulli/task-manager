@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { Task } from "../../../shared/types";
-import { api } from "./api-client";
+import { Task } from "../../../../shared/types";
+import { api } from "../api-client";
 
 export const updateTask = (newTask: Task) => {
   return api.put("/api/tasks/" + newTask._id, newTask);

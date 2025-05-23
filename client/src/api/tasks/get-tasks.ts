@@ -1,6 +1,6 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
-import { api } from "./api-client";
-import { Task } from "../../../shared/types";
+import { Task } from "../../../../shared/types";
+import { api } from "../api-client";
 
 export const getTasks = () => {
   return api.get("/api/tasks");

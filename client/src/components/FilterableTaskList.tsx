@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Task, TaskParams } from "../../../shared/types";
+import { Task, TaskParams, Tag } from "../../../shared/types";
 import TagFilter from "./TagFilter";
 import TaskList from "./TaskList";
 
-import { useCreateTask } from "@/api/create-task";
+import { useCreateTask } from "@/api/tasks/create-task";
 
 import "./components.css";
-import { useDeleteTask } from "@/api/delete-task";
-import { useUpdateTask } from "@/api/update-task";
+import { useDeleteTask } from "@/api/tasks/delete-task";
+import { useUpdateTask } from "@/api/tasks/update-task";
+import { UseQueryResult } from "@tanstack/react-query";
 
 /**
  * Given an array of Tasks, constructs a map of those Tasks using the `_id` field as a key
@@ -26,12 +27,20 @@ function createTaskMap(tasks: Task[]) {
 
 export default function FilterableTaskList({
   startingTasks,
+  startingTags,
 }: {
   startingTasks: Task[];
+  startingTags: Tag[];
 }) {
   // maintain list of tasks here instead of re-fetching
   // the tasks are ONLY stored here, and passed down as props to the rest of the components
   const [tasks, setTasks] = useState(createTaskMap(startingTasks));
+
+  // maintain list of tags here
+  const [tags, setTags] = useState(startingTags);
+
+  // maintain list of active tags - maybe, map by ID
+  const [activeTags, setActiveTags] = useState();
 
   const createMutation = useCreateTask();
   const deleteMutation = useDeleteTask();
@@ -99,7 +108,7 @@ export default function FilterableTaskList({
 
   return (
     <div className="container">
-      <TagFilter />
+      <TagFilter tags={tags} />
       <TaskList
         tasks={tasks}
         onDelete={handleDelete}
