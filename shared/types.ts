@@ -16,3 +16,9 @@ export interface TaskParams {
   tags: string[];
   due: string;
 }
+
+export interface Tag {
+  _id: string;
+  name: string;
+  user: number;
+}

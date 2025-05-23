@@ -1,5 +1,6 @@
 import express from "express";
 import tasks from "./routes/tasks";
+import tags from "./routes/tags";
 import "dotenv/config";
 import cors from "cors";
 const app = express();
@@ -13,6 +14,8 @@ app.use(
 
 // API routes
 app.use("/api/tasks", tasks);
+
+app.use("/api/tags", tags);
 
 app.listen(port, () => {
   console.log(`Tasks API listening on port ${port}`);
