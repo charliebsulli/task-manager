@@ -10,14 +10,14 @@ export default function TaskList({
   onEdit,
   onCreate,
 }: {
-  tasks: Task[];
+  tasks: Map<string, Task>;
   onDelete: (task: Task) => void;
   onEdit: (_id: string, newTask: Task) => void;
   onCreate: (taskParams: TaskParams) => void;
 }) {
-  const listItems = tasks.map((task) => (
+  const listItems = Array.from(tasks, ([_id, task]) => (
     <TaskItem
-      key={task._id}
+      key={_id}
       task={task}
       onDelete={() => onDelete(task)}
       onStatusChange={() => {
@@ -25,7 +25,7 @@ export default function TaskList({
           ...task,
           complete: !task.complete,
         };
-        onEdit(task._id, newTask);
+        onEdit(_id, newTask);
       }}
       onEditSubmit={(newParams: TaskParams) => {
         const newTask: Task = {
@@ -34,7 +34,7 @@ export default function TaskList({
           tags: newParams.tags,
           due: newParams.due,
         };
-        onEdit(task._id, newTask);
+        onEdit(_id, newTask);
       }}
     ></TaskItem>
   ));

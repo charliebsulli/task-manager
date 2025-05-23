@@ -11,6 +11,19 @@ import "./components.css";
 import { useDeleteTask } from "@/api/delete-task";
 import { useUpdateTask } from "@/api/update-task";
 
+/**
+ * Given an array of Tasks, constructs a map of those Tasks using the `_id` field as a key
+ * @param tasks An array of Task objects
+ * @returns A mapping of Task `_id`s to Tasks
+ */
+function createTaskMap(tasks: Task[]) {
+  const taskMap = new Map();
+  for (let i = 0; i < tasks.length; i++) {
+    taskMap.set(tasks[i]._id, tasks[i]);
+  }
+  return taskMap;
+}
+
 export default function FilterableTaskList({
   startingTasks,
 }: {
@@ -18,7 +31,7 @@ export default function FilterableTaskList({
 }) {
   // maintain list of tasks here instead of re-fetching
   // the tasks are ONLY stored here, and passed down as props to the rest of the components
-  const [tasks, setTasks] = useState(startingTasks);
+  const [tasks, setTasks] = useState(createTaskMap(startingTasks));
 
   const createMutation = useCreateTask();
   const deleteMutation = useDeleteTask();
@@ -29,12 +42,8 @@ export default function FilterableTaskList({
     deleteMutation.mutate(task._id, {
       onSuccess: () => {
         // if it succeeds, delete the task from local state
-        let newTasks = [...tasks];
-        for (let i = 0; i < newTasks.length; i++) {
-          if (newTasks[i]._id === task._id) {
-            newTasks.splice(i, 1);
-          }
-        }
+        const newTasks = new Map(tasks);
+        newTasks.delete(task._id);
         setTasks(newTasks);
       },
       onError: (error) => {
@@ -48,12 +57,8 @@ export default function FilterableTaskList({
     updateMutation.mutate(newTask, {
       onSuccess: () => {
         // if it succeeds, update local state of task
-        let newTasks = [...tasks];
-        for (let i = 0; i < newTasks.length; i++) {
-          if (newTasks[i]._id === _id) {
-            newTasks[i] = newTask;
-          }
-        }
+        const newTasks = new Map(tasks);
+        newTasks.set(_id, newTask);
         setTasks(newTasks);
       },
       onError: (error) => {
@@ -82,7 +87,8 @@ export default function FilterableTaskList({
           ...newTask,
           _id: newId,
         };
-        let newTasks = [...tasks, newTask];
+        const newTasks = new Map(tasks);
+        newTasks.set(newId, newTask);
         setTasks(newTasks);
       },
       onError: (error) => {
