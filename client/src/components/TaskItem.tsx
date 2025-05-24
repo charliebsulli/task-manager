@@ -98,7 +98,15 @@ export default function TaskItem({
         <EditButton onClick={handleEditClick} />
         <DeleteButton onClick={onDelete} />
       </div>
-      {editing && <TaskForm onCreate={onEditSubmit} tags={allTags} />}
+      {editing && (
+        <TaskForm
+          onCreate={(newParams) => {
+            handleEditClick();
+            onEditSubmit(newParams);
+          }}
+          tags={allTags}
+        />
+      )}
     </>
   );
 }

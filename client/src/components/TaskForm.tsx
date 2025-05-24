@@ -44,7 +44,6 @@ export default function TaskForm({
 
   return (
     <form className="task-form">
-      <h1>Create a new task.</h1>
       <input
         type="text"
         placeholder="Task..."
