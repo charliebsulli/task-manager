@@ -12,17 +12,19 @@ import { useDeleteTask } from "@/api/tasks/delete-task";
 import { useUpdateTask } from "@/api/tasks/update-task";
 import { UseQueryResult } from "@tanstack/react-query";
 
+export const NONE = "none";
+
 /**
- * Given an array of Tasks, constructs a map of those Tasks using the `_id` field as a key
- * @param tasks An array of Task objects
- * @returns A mapping of Task `_id`s to Tasks
+ * Given an array of Tasks or Tags, constructs a map using the `_id` field as a key
+ * @param items An array of Task or Tag objects
+ * @returns A mapping of `_id`s to ojbects
  */
-function createTaskMap(tasks: Task[]) {
-  const taskMap = new Map();
-  for (let i = 0; i < tasks.length; i++) {
-    taskMap.set(tasks[i]._id, tasks[i]);
+function createMap(items: Task[] | Tag[]) {
+  const map = new Map();
+  for (let i = 0; i < items.length; i++) {
+    map.set(items[i]._id, items[i]);
   }
-  return taskMap;
+  return map;
 }
 
 export default function FilterableTaskList({
@@ -34,13 +36,13 @@ export default function FilterableTaskList({
 }) {
   // maintain list of tasks here instead of re-fetching
   // the tasks are ONLY stored here, and passed down as props to the rest of the components
-  const [tasks, setTasks] = useState(createTaskMap(startingTasks));
+  const [tasks, setTasks] = useState(createMap(startingTasks));
 
-  // maintain list of tags here
-  const [tags, setTags] = useState(startingTags);
+  // maintain list of tags here, indexed by _id
+  const [tags, setTags] = useState(createMap(startingTags));
 
-  // maintain list of active tags - maybe, map by ID
-  const [activeTags, setActiveTags] = useState();
+  // tag which the shown list is filtered by
+  const [activeTag, setActiveTag] = useState(NONE);
 
   const createMutation = useCreateTask();
   const deleteMutation = useDeleteTask();
@@ -106,14 +108,30 @@ export default function FilterableTaskList({
     });
   }
 
+  // update filter
+  // _id is the _id of the task to change the filter to
+  function handleFilterChange(_id: string) {
+    if (activeTag === _id) {
+      setActiveTag(NONE);
+    } else {
+      setActiveTag(_id);
+    }
+  }
+
   return (
     <div className="container">
-      <TagFilter tags={tags} />
+      <TagFilter
+        tags={tags}
+        active={activeTag}
+        onFilterChange={handleFilterChange}
+      />
       <TaskList
         tasks={tasks}
         onDelete={handleDelete}
         onEdit={handleEdit}
         onCreate={handleCreate}
+        tags={tags}
+        activeTag={activeTag}
       />
     </div>
   );
