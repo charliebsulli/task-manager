@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Task, TaskParams } from "../../../shared/types";
+import { Task, TaskParams, Tag } from "../../../shared/types";
 import TaskForm from "./TaskForm";
 
 function Checkbox({
@@ -39,13 +39,15 @@ function DueDateTime({ dueDateTime }: { dueDateTime: string }) {
   return <p className="due-date">{dueDateTime}</p>;
 }
 
-function TagList({ tags }: { tags: string[] }) {
-  const listTags = tags.map((tag, idx) => <Tag key={idx} tag={tag} />);
+function TagList({ tagNames }: { tagNames: string[] }) {
+  const listTags = tagNames.map((tagName, idx) => (
+    <TagItem key={idx} tagName={tagName} />
+  ));
   return <div className="tags-container">{listTags}</div>;
 }
 
-function Tag({ tag }: { tag: string }) {
-  return <p className="tag">{tag}</p>;
+function TagItem({ tagName }: { tagName: string }) {
+  return <p className="tag">{tagName}</p>;
 }
 
 export default function TaskItem({
@@ -53,13 +55,29 @@ export default function TaskItem({
   onDelete,
   onStatusChange,
   onEditSubmit,
+  allTags,
 }: {
   task: Task;
   onDelete: () => void;
   onStatusChange: () => void;
   onEditSubmit: (newParams: TaskParams) => void;
+  allTags: Map<string, Tag>;
 }) {
   const [editing, setEditing] = useState(false);
+
+  // given a list of tag `_ids`, create a list of corresponding tag names
+  // this implicitly but badly handles case where a Tag is deleted from
+  // the database
+  function getTagNames(tagIds: string[]) {
+    let tagNames = [];
+    for (let i = 0; i < tagIds.length; i++) {
+      const name = allTags.get(tagIds[i])?.name;
+      if (name) {
+        tagNames.push(name);
+      }
+    }
+    return tagNames;
+  }
 
   function handleEditClick() {
     setEditing(!editing);
@@ -74,13 +92,21 @@ export default function TaskItem({
         <Checkbox status={task.complete} onStatusChange={onStatusChange} />
         <div className="tagged-task">
           <p className="task-name">{task.name}</p>
-          <TagList tags={task.tags} />
+          <TagList tagNames={getTagNames(task.tags)} />
         </div>
         <DueDateTime dueDateTime={task.due} />
         <EditButton onClick={handleEditClick} />
         <DeleteButton onClick={onDelete} />
       </div>
-      {editing && <TaskForm onCreate={onEditSubmit} />}
+      {editing && (
+        <TaskForm
+          onCreate={(newParams) => {
+            handleEditClick();
+            onEditSubmit(newParams);
+          }}
+          tags={allTags}
+        />
+      )}
     </>
   );
 }

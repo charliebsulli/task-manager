@@ -1,10 +1,6 @@
-import express, { Request, Response } from "express";
-import {
-  editTask,
-  createTask,
-  deleteTask,
-  getTasks,
-} from "./database/dataService";
+import express from "express";
+import tasks from "./routes/tasks";
+import tags from "./routes/tags";
 import "dotenv/config";
 import cors from "cors";
 const app = express();
@@ -16,29 +12,10 @@ app.use(
   })
 );
 
-app.use(express.json());
-
 // API routes
+app.use("/api/tasks", tasks);
 
-// get all Tasks
-app.get("/api/", (req: Request, res: Response) => {
-  getTasks().then((result) => res.send(result));
-});
-
-// edit Task
-app.put("/api/:_id", (req: Request, res: Response) => {
-  editTask(req.params._id, req.body).then((result) => res.send(result));
-});
-
-// create Task
-app.post("/api/", (req: Request, res: Response) => {
-  createTask(req.body).then((result) => res.send(result));
-});
-
-// delete Task
-app.delete("/api/:_id", (req: Request, res: Response) => {
-  deleteTask(req.params._id).then((result) => res.send(result));
-});
+app.use("/api/tags", tags);
 
 app.listen(port, () => {
   console.log(`Tasks API listening on port ${port}`);

@@ -9,6 +9,8 @@
   width: 100px;
   height: 350px;
   background-color: lightgray;
+  display: flex;
+  flex-direction: column;
 }
 
 .list-container {
@@ -89,4 +91,51 @@
 .tag {
   color: white;
   background-color: lightgray;
+}
+
+.menu-tag {
+  border-radius: 5px;
+  color: darkgrey;
+  background-color: azure;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.menu-tag:hover {
+  background-color: blue;
+}
+
+.tag-switch {
+  display: flex;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin: 0.25em;
+  background-color: aquamarine;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch {
+  flex: 1;
+  margin-left: 0.25em;
+}
+
+.switch:hover {
+  background-color: aqua;
+}
+
+input:checked + .toggle {
+  background-color: red;
+}
+
+.delete-tag {
+  width: 20%;
+}
+
+.delete-tag:hover {
+  background-color: aqua;
 }

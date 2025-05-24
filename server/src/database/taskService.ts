@@ -1,12 +1,6 @@
 import { Task } from "../../../shared/types";
-import { MongoClient, ObjectId } from "mongodb";
-import "dotenv/config";
-
-const uri = process.env.DB_CONNECTION_STRING || "mongodb://127.0.0.1";
-const client = new MongoClient(uri);
-
-const databaseName = process.env.DB_NAME || "test";
-const database = client.db(databaseName);
+import { ObjectId } from "mongodb";
+import database from "./database";
 
 const tasksCollection = database.collection("tasks");
 
