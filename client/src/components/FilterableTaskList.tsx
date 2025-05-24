@@ -10,8 +10,8 @@ import { useCreateTask } from "@/api/tasks/create-task";
 import "./components.css";
 import { useDeleteTask } from "@/api/tasks/delete-task";
 import { useUpdateTask } from "@/api/tasks/update-task";
-import { UseQueryResult } from "@tanstack/react-query";
-
+import { useCreateTag } from "@/api/tags/create-tag";
+import { useDeleteTag } from "@/api/tags/delete-tag";
 export const NONE = "none";
 
 /**
@@ -44,13 +44,16 @@ export default function FilterableTaskList({
   // tag which the shown list is filtered by
   const [activeTag, setActiveTag] = useState(NONE);
 
-  const createMutation = useCreateTask();
-  const deleteMutation = useDeleteTask();
-  const updateMutation = useUpdateTask();
+  const createTaskMutation = useCreateTask();
+  const deleteTaskMutation = useDeleteTask();
+  const updateTaskMutation = useUpdateTask();
 
-  function handleDelete(task: Task) {
+  const createTagMutation = useCreateTag();
+  const deleteTagMutation = useDeleteTag();
+
+  function handleDeleteTask(task: Task) {
     // make API request to delete
-    deleteMutation.mutate(task._id, {
+    deleteTaskMutation.mutate(task._id, {
       onSuccess: () => {
         // if it succeeds, delete the task from local state
         const newTasks = new Map(tasks);
@@ -63,9 +66,9 @@ export default function FilterableTaskList({
     });
   }
 
-  function handleEdit(_id: string, newTask: Task) {
+  function handleEditTask(_id: string, newTask: Task) {
     // make API request to edit
-    updateMutation.mutate(newTask, {
+    updateTaskMutation.mutate(newTask, {
       onSuccess: () => {
         // if it succeeds, update local state of task
         const newTasks = new Map(tasks);
@@ -78,8 +81,8 @@ export default function FilterableTaskList({
     });
   }
 
-  function handleCreate({ name, tags, due }: TaskParams) {
-    let newTask = {
+  function handleCreateTask({ name, tags, due }: TaskParams) {
+    let newTask: Task = {
       _id: "temp", // DB will generate _id
       name: name,
       complete: false,
@@ -89,7 +92,7 @@ export default function FilterableTaskList({
     };
 
     // make API request to create
-    createMutation.mutate(newTask, {
+    createTaskMutation.mutate(newTask, {
       onSuccess: (data) => {
         // if it succeeds, add this task to local state
         // first, replace with _id assigned by DB
@@ -101,6 +104,43 @@ export default function FilterableTaskList({
         const newTasks = new Map(tasks);
         newTasks.set(newId, newTask);
         setTasks(newTasks);
+      },
+      onError: (error) => {
+        console.log(error.message);
+      },
+    });
+  }
+
+  function handleCreateTag(name: string) {
+    let newTag: Tag = {
+      _id: "temp",
+      name: name,
+      user: 0,
+    };
+
+    createTagMutation.mutate(newTag, {
+      onSuccess: (data) => {
+        const newId = data.data;
+        newTag = {
+          ...newTag,
+          _id: newId,
+        };
+        const newTags = new Map(tags);
+        newTags.set(newId, newTag);
+        setTags(newTags);
+      },
+      onError: (error) => {
+        console.log(error.message);
+      },
+    });
+  }
+
+  function handleDeleteTag(_id: string) {
+    deleteTagMutation.mutate(_id, {
+      onSuccess: () => {
+        const newTags = new Map(tags);
+        newTags.delete(_id);
+        setTags(newTags);
       },
       onError: (error) => {
         console.log(error.message);
@@ -124,12 +164,14 @@ export default function FilterableTaskList({
         tags={tags}
         active={activeTag}
         onFilterChange={handleFilterChange}
+        onCreate={handleCreateTag}
+        onDelete={handleDeleteTag}
       />
       <TaskList
         tasks={tasks}
-        onDelete={handleDelete}
-        onEdit={handleEdit}
-        onCreate={handleCreate}
+        onDelete={handleDeleteTask}
+        onEdit={handleEditTask}
+        onCreate={handleCreateTask}
         tags={tags}
         activeTag={activeTag}
       />
