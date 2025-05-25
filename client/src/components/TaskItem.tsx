@@ -21,7 +21,11 @@ function Checkbox({
 
 function DeleteButton({ onClick }: { onClick: () => void }) {
   return (
-    <button type="button" className="delete" onClick={onClick}>
+    <button
+      type="button"
+      className="mr-1.5 text-red-300 hover:text-red-500"
+      onClick={onClick}
+    >
       Delete
     </button>
   );
@@ -29,14 +33,18 @@ function DeleteButton({ onClick }: { onClick: () => void }) {
 
 function EditButton({ onClick }: { onClick: () => void }) {
   return (
-    <button type="button" className="edit" onClick={onClick}>
+    <button
+      type="button"
+      className="mr-4 text-slate-300 hover:text-slate-500"
+      onClick={onClick}
+    >
       Edit
     </button>
   );
 }
 
 function DueDateTime({ dueDateTime }: { dueDateTime: string }) {
-  return <p className="due-date">{dueDateTime}</p>;
+  return <p className="flex-5/12 ml-1">{dueDateTime}</p>;
 }
 
 function TagList({ tagNames }: { tagNames: string[] }) {
@@ -47,7 +55,11 @@ function TagList({ tagNames }: { tagNames: string[] }) {
 }
 
 function TagItem({ tagName }: { tagName: string }) {
-  return <p className="tag">{tagName}</p>;
+  return (
+    <span className="bg-slate-300 rounded h-6">
+      <p className="mx-1">{tagName}</p>
+    </span>
+  );
 }
 
 export default function TaskItem({
@@ -88,10 +100,10 @@ export default function TaskItem({
 
   return (
     <>
-      <div className="task-container">
+      <div className="flex flex-row">
         <Checkbox status={task.complete} onStatusChange={onStatusChange} />
-        <div className="tagged-task">
-          <p className="task-name">{task.name}</p>
+        <div className="flex flex-row gap-1 flex-5/12">
+          <p className="">{task.name}</p>
           <TagList tagNames={getTagNames(task.tags)} />
         </div>
         <DueDateTime dueDateTime={task.due} />

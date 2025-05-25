@@ -159,7 +159,7 @@ export default function FilterableTaskList({
   }
 
   return (
-    <div className="container">
+    <div className="flex flex-row">
       <TagFilter
         tags={tags}
         active={activeTag}

@@ -25,7 +25,8 @@ export default function TagFilter({
     />
   ));
   return (
-    <div className="filters-container">
+    <div className="top-0 left-0 h-screen bg-slate-100 flex flex-col gap-1.5 w-1/4">
+      <div className="mt-3"></div>
       {listTags}
       <TagForm onCreate={onCreate}></TagForm>
     </div>

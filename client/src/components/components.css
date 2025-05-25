@@ -13,12 +13,6 @@
   flex-direction: column;
 }
 
-.list-container {
-  width: 400px;
-  height: 350px;
-  background-color: antiquewhite;
-}
-
 .task-header {
   margin-left: 5px;
   margin-top: 2px;
@@ -103,33 +97,6 @@
 
 .menu-tag:hover {
   background-color: blue;
-}
-
-.tag-switch {
-  display: flex;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin: 0.25em;
-  background-color: aquamarine;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.switch {
-  flex: 1;
-  margin-left: 0.25em;
-}
-
-.switch:hover {
-  background-color: aqua;
-}
-
-input:checked + .toggle {
-  background-color: red;
 }
 
 .delete-tag {

@@ -17,15 +17,16 @@ export default function TagForm({
   }
 
   return (
-    <form>
+    <form className="mx-3 flex flex-row">
       <input
         type="text"
         placeholder="Add tag..."
         value={tagName}
         onChange={(e) => handleTagNameChange(e.target.value)}
+        className="mr-3 flex-3/5 min-w-0"
       ></input>
-      <button type="button" onClick={handleCreateClick}>
-        Create
+      <button className="btn-primary" type="button" onClick={handleCreateClick}>
+        <p className="mx-1">Create</p>
       </button>
     </form>
   );
