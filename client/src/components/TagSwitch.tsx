@@ -17,7 +17,7 @@ export default function TagSwitch({
         onChange={onStatusChange}
         className="peer w-0 h-0 opacity-0 absolute"
       />
-      <span className="bg-slate-300 flex rounded group hover:bg-purple-100 peer-checked:bg-purple-500 peer-checked:hover:bg-purple-400">
+      <span className="btn-primary flex group peer-checked:bg-slate-400 peer-checked:hover:bg-slate-400">
         <p className="flex-10/12 ml-1 select-none">{name}</p>
         <label className="scale-0 group-hover:scale-100">
           <button
@@ -25,7 +25,7 @@ export default function TagSwitch({
             onClick={onDelete}
             className="w-0 h-0 opacity-0 absolute"
           ></button>
-          <span className="mr-1 hover:text-red-400 align-middle select-none">
+          <span className="mr-1 text-red-300 hover:text-red-500 align-middle select-none">
             X
           </span>
         </label>

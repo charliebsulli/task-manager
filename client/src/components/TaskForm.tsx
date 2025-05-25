@@ -43,7 +43,7 @@ export default function TaskForm({
   ));
 
   return (
-    <form className="task-form mx-3">
+    <form className="flex flex-col gap-1 mx-1.5">
       <input
         type="text"
         placeholder="Task..."
@@ -60,7 +60,7 @@ export default function TaskForm({
         <option value="">Select tag...</option>
         {tagOptions}
       </select>
-      <button type="button" className="create-task" onClick={handleCreateClick}>
+      <button type="button" className="btn-primary" onClick={handleCreateClick}>
         Submit
       </button>
     </form>

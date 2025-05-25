@@ -25,11 +25,7 @@ export default function TagForm({
         onChange={(e) => handleTagNameChange(e.target.value)}
         className="mr-3 flex-3/5 min-w-0"
       ></input>
-      <button
-        className="bg-slate-300 rounded group hover:bg-purple-100"
-        type="button"
-        onClick={handleCreateClick}
-      >
+      <button className="btn-primary" type="button" onClick={handleCreateClick}>
         <p className="mx-1">Create</p>
       </button>
     </form>

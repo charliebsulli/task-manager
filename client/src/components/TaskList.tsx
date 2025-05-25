@@ -50,7 +50,7 @@ export default function TaskList({
   );
 
   return (
-    <div className="fixed w-3/4 mr-0">
+    <div className="w-3/4 mt-2">
       <TaskHeader />
       {listItems}
       <TaskForm onCreate={onCreate} tags={tags} />

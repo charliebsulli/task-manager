@@ -159,7 +159,7 @@ export default function FilterableTaskList({
   }
 
   return (
-    <div className="">
+    <div className="flex flex-row">
       <TagFilter
         tags={tags}
         active={activeTag}
@@ -167,14 +167,14 @@ export default function FilterableTaskList({
         onCreate={handleCreateTag}
         onDelete={handleDeleteTag}
       />
-      {/* <TaskList
+      <TaskList
         tasks={tasks}
         onDelete={handleDeleteTask}
         onEdit={handleEditTask}
         onCreate={handleCreateTask}
         tags={tags}
         activeTag={activeTag}
-      /> */}
+      />
     </div>
   );
 }
