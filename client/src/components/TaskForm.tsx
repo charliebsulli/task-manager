@@ -43,7 +43,7 @@ export default function TaskForm({
   ));
 
   return (
-    <form className="task-form">
+    <form className="task-form mx-3">
       <input
         type="text"
         placeholder="Task..."
