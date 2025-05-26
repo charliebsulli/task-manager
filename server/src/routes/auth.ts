@@ -1,9 +1,13 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import {
+  deleteManyUserRefreshTokens,
+  deleteUserRefreshToken,
+  findInvalidAccessToken,
   findUser,
   findUserRefreshToken,
+  insertInvalidToken,
   insertUser,
   insertUserRefreshToken,
 } from "../database/userService";
@@ -77,7 +81,7 @@ router.post("/login", async (req, res) => {
       { subject: "refreshToken", expiresIn: "1w" }
     );
 
-    await insertUserRefreshToken(refreshToken, user._id);
+    await insertUserRefreshToken(refreshToken, user._id.toHexString());
 
     res.status(200).json({
       id: user._id,
@@ -89,5 +93,124 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+router.post("/refresh-token", async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      res.status(401).json({ message: "Refresh token not found" });
+      return;
+    }
+
+    const decodedRefreshToken = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET!
+    );
+
+    const userRefreshToken = await findUserRefreshToken(
+      refreshToken,
+      decodedRefreshToken.userId
+    );
+
+    if (!userRefreshToken) {
+      res.status(401).json({ message: "Refresh not found in DB" });
+      return;
+    }
+
+    await deleteUserRefreshToken(refreshToken);
+
+    const accessToken = jwt.sign(
+      { userId: decodedRefreshToken.userId },
+      process.env.ACCESS_TOKEN_SECRET!,
+      { subject: "accessApi", expiresIn: "30m" }
+    );
+
+    const newRefreshToken = jwt.sign(
+      { userId: decodedRefreshToken.userId },
+      process.env.REFRESH_TOKEN_SECRET!,
+      { subject: "refreshToken", expiresIn: "1w" }
+    );
+
+    await insertUserRefreshToken(newRefreshToken, decodedRefreshToken.userId);
+
+    res.status(200).json({
+      accessToken,
+      refreshToken: newRefreshToken,
+    });
+  } catch (error) {
+    if (
+      error instanceof jwt.TokenExpiredError ||
+      error instanceof jwt.JsonWebTokenError
+    ) {
+      res.status(401).json({ message: "Refresh token invalid or expired" });
+    } else {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+});
+
+// logout
+router.get("/logout", ensureAuthenticated, async (req, res) => {
+  try {
+    await deleteManyUserRefreshTokens(req.user.id);
+
+    await insertInvalidToken(
+      req.accessToken.value,
+      req.user.id,
+      req.accessToken.exp
+    );
+
+    res.status(204).send();
+  } catch {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// middleware to authenticate (export)
+export async function ensureAuthenticated(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const accessToken = req.headers.authorization;
+
+  if (!accessToken) {
+    res.status(401).json({ message: "Access token not found" });
+    return;
+  }
+
+  if (await findInvalidAccessToken(accessToken)) {
+    res
+      .status(401)
+      .json({ message: "Access token invalid", code: "AccessTokenInvalid" });
+  }
+  try {
+    const decodedAccessToken = jwt.verify(
+      accessToken,
+      process.env.ACCESS_TOKEN_SECRET!
+    );
+
+    req.accessToken = { value: accessToken, exp: decodedAccessToken.exp };
+    req.user = { id: decodedAccessToken.userId };
+
+    next();
+  } catch (error) {
+    // verify throws error caught here
+    if (error instanceof jwt.TokenExpiredError) {
+      res.status(401).json({
+        message: "Access token expired",
+        code: "AccessTokenExpired",
+      }); // client gets an AccessCodeExpired error
+    } else if (error instanceof jwt.JsonWebTokenError) {
+      res.status(401).json({
+        message: "Access token invalid",
+        code: "AccessTokenInvalid",
+      }); // exact code doesn't matter, but document it for clients
+    } else {
+      res.status(500).json({ message: "internal server error" });
+    }
+  }
+}
 
 export default router;

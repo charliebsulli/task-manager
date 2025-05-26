@@ -1,8 +1,9 @@
-import database from "./database";
 import { ObjectId } from "mongodb";
+import database from "./database";
 
 const usersCollection = database.collection("users");
 const userRefreshTokensCollection = database.collection("userRefreshTokens");
+const invalidTokensCollection = database.collection("invalidTokens");
 
 export async function findUser(username: string) {
   const user = await usersCollection.findOne({ username });
@@ -16,18 +17,44 @@ export async function insertUser(username: string, password: string) {
 
 export async function insertUserRefreshToken(
   refreshToken: string,
-  userId: ObjectId
+  userId: string
 ) {
   await userRefreshTokensCollection.insertOne({ refreshToken, userId });
 }
 
 export async function findUserRefreshToken(
   refreshToken: string,
-  userId: ObjectId
+  userId: string
 ) {
   const userRefreshToken = await userRefreshTokensCollection.findOne({
     refreshToken,
     userId,
   });
   return userRefreshToken;
+}
+
+export async function deleteUserRefreshToken(refreshToken: string) {
+  await userRefreshTokensCollection.deleteOne({ refreshToken });
+}
+
+export async function deleteManyUserRefreshTokens(userId: string) {
+  await userRefreshTokensCollection.deleteMany({ userId });
+}
+
+export async function insertInvalidToken(
+  accessToken: string,
+  userId: string,
+  expirationTime: any
+) {
+  console.log(typeof expirationTime);
+  await invalidTokensCollection.insertOne({
+    accessToken,
+    userId,
+    expirationTime,
+  });
+}
+
+export async function findInvalidAccessToken(accessToken: string) {
+  const result = await invalidTokensCollection.findOne({ accessToken });
+  return result;
 }
