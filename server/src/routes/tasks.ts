@@ -5,9 +5,12 @@ import {
   deleteTask,
   getTasks,
 } from "../database/taskService";
+import { ensureAuthenticated } from "./auth";
 const router = express.Router();
 
 router.use(express.json());
+
+router.use(ensureAuthenticated);
 
 // get all Tasks
 router.get("/", (req: Request, res: Response) => {

@@ -1,9 +1,12 @@
 import express from "express";
 import { createTag, deleteTask, getTags } from "../database/tagService";
+import { ensureAuthenticated } from "./auth";
 
 const router = express.Router();
 
 router.use(express.json());
+
+router.use(ensureAuthenticated);
 
 // get all Tags
 router.get("/", (req, res) => {

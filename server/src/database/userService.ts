@@ -44,9 +44,8 @@ export async function deleteManyUserRefreshTokens(userId: string) {
 export async function insertInvalidToken(
   accessToken: string,
   userId: string,
-  expirationTime: any
+  expirationTime: number
 ) {
-  console.log(typeof expirationTime);
   await invalidTokensCollection.insertOne({
     accessToken,
     userId,

@@ -184,6 +184,7 @@ export async function ensureAuthenticated(
     res
       .status(401)
       .json({ message: "Access token invalid", code: "AccessTokenInvalid" });
+    return;
   }
   try {
     const decodedAccessToken = jwt.verify(

@@ -21,9 +21,9 @@ app.get("/", (req, res) => {
 app.use("/api/auth", auth);
 
 // API routes
-app.use("/api/tasks", tasks);
+app.use("/api/users/current/tasks", tasks);
 
-app.use("/api/tags", tags);
+app.use("/api/users/current/tags", tags);
 
 app.listen(port, () => {
   console.log(`Tasks API listening on port ${port}`);
