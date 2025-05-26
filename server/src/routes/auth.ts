@@ -12,6 +12,7 @@ import {
   insertUserRefreshToken,
 } from "../database/userService";
 import "dotenv/config";
+import { getEnvVar, getErrorMessage } from "../utils/utils";
 
 const router = express.Router();
 
@@ -42,7 +43,7 @@ router.post("/register", async (req, res) => {
       id: userId,
     });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: getErrorMessage(error) });
   }
 });
 
@@ -71,14 +72,17 @@ router.post("/login", async (req, res) => {
 
     const accessToken = jwt.sign(
       { userId: user._id },
-      process.env.ACCESS_TOKEN_SECRET!,
+      getEnvVar("ACCESS_TOKEN_SECRET"),
       { subject: "accessApi", expiresIn: "30m" }
     );
 
     const refreshToken = jwt.sign(
       { userId: user._id },
-      process.env.REFRESH_TOKEN_SECRET!,
-      { subject: "refreshToken", expiresIn: "1w" }
+      getEnvVar("REFRESH_TOKEN_SECRET"),
+      {
+        subject: "refreshToken",
+        expiresIn: "1w",
+      }
     );
 
     await insertUserRefreshToken(refreshToken, user._id.toHexString());
@@ -90,7 +94,7 @@ router.post("/login", async (req, res) => {
       refreshToken,
     });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: getErrorMessage(error) });
   }
 });
 
@@ -105,7 +109,7 @@ router.post("/refresh-token", async (req, res) => {
 
     const decodedRefreshToken = jwt.verify(
       refreshToken,
-      process.env.REFRESH_TOKEN_SECRET!
+      getEnvVar("REFRESH_TOKEN_SECRET")
     );
 
     const userRefreshToken = await findUserRefreshToken(
@@ -122,14 +126,17 @@ router.post("/refresh-token", async (req, res) => {
 
     const accessToken = jwt.sign(
       { userId: decodedRefreshToken.userId },
-      process.env.ACCESS_TOKEN_SECRET!,
+      getEnvVar("ACCESS_TOKEN_SECRET"),
       { subject: "accessApi", expiresIn: "30m" }
     );
 
     const newRefreshToken = jwt.sign(
       { userId: decodedRefreshToken.userId },
-      process.env.REFRESH_TOKEN_SECRET!,
-      { subject: "refreshToken", expiresIn: "1w" }
+      getEnvVar("REFRESH_TOKEN_SECRET"),
+      {
+        subject: "refreshToken",
+        expiresIn: "1w",
+      }
     );
 
     await insertUserRefreshToken(newRefreshToken, decodedRefreshToken.userId);
@@ -145,7 +152,7 @@ router.post("/refresh-token", async (req, res) => {
     ) {
       res.status(401).json({ message: "Refresh token invalid or expired" });
     } else {
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: getErrorMessage(error) });
     }
   }
 });
@@ -162,8 +169,8 @@ router.get("/logout", ensureAuthenticated, async (req, res) => {
     );
 
     res.status(204).send();
-  } catch {
-    res.status(500).json({ message: "Internal server error" });
+  } catch (error) {
+    res.status(500).json({ error: getErrorMessage(error) });
   }
 });
 
@@ -189,7 +196,7 @@ export async function ensureAuthenticated(
   try {
     const decodedAccessToken = jwt.verify(
       accessToken,
-      process.env.ACCESS_TOKEN_SECRET!
+      getEnvVar("ACCESS_TOKEN_SECRET")
     );
 
     req.accessToken = { value: accessToken, exp: decodedAccessToken.exp };
@@ -209,7 +216,7 @@ export async function ensureAuthenticated(
         code: "AccessTokenInvalid",
       }); // exact code doesn't matter, but document it for clients
     } else {
-      res.status(500).json({ message: "internal server error" });
+      res.status(500).json({ error: getErrorMessage(error) });
     }
   }
 }
