@@ -5,8 +5,8 @@ import database from "./database";
 const tasksCollection = database.collection("tasks");
 
 // get all Tasks
-export async function getTasks() {
-  const cursor = tasksCollection.find({});
+export async function getTasks(userId: string) {
+  const cursor = tasksCollection.find({ userId });
   const allTasks = await cursor.toArray();
   return allTasks;
 }

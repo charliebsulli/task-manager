@@ -112,6 +112,10 @@ router.post("/refresh-token", async (req, res) => {
       getEnvVar("REFRESH_TOKEN_SECRET")
     );
 
+    if (typeof decodedRefreshToken === "string") {
+      throw Error("JWT payload must be an object, not a string");
+    }
+
     const userRefreshToken = await findUserRefreshToken(
       refreshToken,
       decodedRefreshToken.userId
@@ -160,6 +164,9 @@ router.post("/refresh-token", async (req, res) => {
 // logout
 router.get("/logout", ensureAuthenticated, async (req, res) => {
   try {
+    if (!req.accessToken || !req.user) {
+      throw Error("Authentication middleware error");
+    }
     await deleteManyUserRefreshTokens(req.user.id);
 
     await insertInvalidToken(
@@ -198,6 +205,10 @@ export async function ensureAuthenticated(
       accessToken,
       getEnvVar("ACCESS_TOKEN_SECRET")
     );
+
+    if (typeof decodedAccessToken === "string") {
+      throw Error("JWT payload must be an object, not a string");
+    }
 
     req.accessToken = { value: accessToken, exp: decodedAccessToken.exp };
     req.user = { id: decodedAccessToken.userId };

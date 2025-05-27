@@ -6,6 +6,7 @@ import {
   getTasks,
 } from "../database/taskService";
 import { ensureAuthenticated } from "./auth";
+import { getErrorMessage } from "../utils/utils";
 const router = express.Router();
 
 router.use(express.json());
@@ -13,8 +14,16 @@ router.use(express.json());
 router.use(ensureAuthenticated);
 
 // get all Tasks
-router.get("/", (req: Request, res: Response) => {
-  getTasks().then((result) => res.send(result));
+router.get("/", async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      throw Error("Authentication middleware error");
+    }
+    const result = await getTasks(req.user.id);
+    res.send(result);
+  } catch (error) {
+    res.status(500).json({ message: getErrorMessage(error) });
+  }
 });
 
 // edit Task

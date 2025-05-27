@@ -10,7 +10,7 @@ export interface Task {
   complete: boolean;
   tags: string[];
   due: string;
-  user: number;
+  userId: string;
 }
 
 export interface TaskParams {

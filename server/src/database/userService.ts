@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import database from "./database";
 
 const usersCollection = database.collection("users");
@@ -44,7 +43,7 @@ export async function deleteManyUserRefreshTokens(userId: string) {
 export async function insertInvalidToken(
   accessToken: string,
   userId: string,
-  expirationTime: number
+  expirationTime: number | undefined
 ) {
   await invalidTokensCollection.insertOne({
     accessToken,
