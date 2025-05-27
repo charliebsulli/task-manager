@@ -22,5 +22,5 @@ export interface TaskParams {
 export interface Tag {
   _id: string;
   name: string;
-  user: number;
+  userId: string;
 }

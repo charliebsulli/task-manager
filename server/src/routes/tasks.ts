@@ -18,7 +18,7 @@ router.use(ensureAuthenticated);
 router.get("/", async (req, res) => {
   try {
     if (!req.user) {
-      throw Error("Authentication middleware error");
+      throw Error("Authentication error");
     }
     const result = await getTasks(req.user.id);
     res.send(result);
