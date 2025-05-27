@@ -1,9 +1,10 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import {
   editTask,
   createTask,
   deleteTask,
   getTasks,
+  getTask,
 } from "../database/taskService";
 import { ensureAuthenticated } from "./auth";
 import { getErrorMessage } from "../utils/utils";
@@ -13,8 +14,8 @@ router.use(express.json());
 
 router.use(ensureAuthenticated);
 
-// get all Tasks
-router.get("/", async (req: Request, res: Response) => {
+// get all Tasks for the authenticated user
+router.get("/", async (req, res) => {
   try {
     if (!req.user) {
       throw Error("Authentication middleware error");
@@ -27,18 +28,56 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 // edit Task
-router.put("/:_id", (req: Request, res: Response) => {
-  editTask(req.params._id, req.body).then((result) => res.send(result));
+router.put("/:taskId", async (req, res) => {
+  try {
+    // make sure task belongs to the authenticated user first
+    const task = await getTask(req.params.taskId);
+    if (task && task.userId === req.user?.id) {
+      // then, edit task
+      await editTask(req.params.taskId, req.body);
+      res.status(204).send();
+      return;
+    }
+    res
+      .status(401)
+      .json({ message: "Task does not exist or not authorized to access" });
+  } catch (error) {
+    res.status(500).json({ message: getErrorMessage(error) });
+  }
 });
 
-// create Task
-router.post("/", (req: Request, res: Response) => {
-  createTask(req.body).then((result) => res.send(result));
+// create Task: returns json with taskId on success
+router.post("/", async (req, res) => {
+  // ensure task is added for the current user
+  try {
+    let task = req.body;
+    task = {
+      ...task,
+      userId: req.user?.id,
+    };
+    const taskId = await createTask(task);
+    res.json({ taskId });
+  } catch (error) {
+    res.status(500).json({ message: getErrorMessage(error) });
+  }
 });
 
 // delete Task
-router.delete("/:_id", (req: Request, res: Response) => {
-  deleteTask(req.params._id).then((result) => res.send(result));
+router.delete("/:taskId", async (req, res) => {
+  try {
+    // make sure task belongs to the authenticated user first
+    const task = await getTask(req.params.taskId);
+    if (task && task.userId === req.user?.id) {
+      await deleteTask(req.params.taskId);
+      res.status(204).send();
+      return;
+    }
+    res
+      .status(401)
+      .json({ message: "Task does not exist or not authorized to access" });
+  } catch (error) {
+    res.status(500).json({ message: getErrorMessage(error) });
+  }
 });
 
 export default router;
