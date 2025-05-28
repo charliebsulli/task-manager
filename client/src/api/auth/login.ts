@@ -8,5 +8,13 @@ export const login = (credentials: Credentials) => {
 export const useLogin = () => {
   return useMutation({
     mutationFn: (credentials: Credentials) => login(credentials),
+    onSuccess(data, variables, context) {
+      if (data.data.accessToken) {
+        localStorage.setItem("accessToken", data.data.accessToken);
+      }
+      if (data.data.refreshToken) {
+        localStorage.setItem("refreshToken", data.data.refreshToken);
+      }
+    },
   });
 };
