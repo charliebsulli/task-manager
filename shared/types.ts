@@ -1,5 +1,7 @@
 export interface User {
-  id: number;
+  _id: string;
+  username: string;
+  password: string;
 }
 
 export interface Task {
@@ -8,7 +10,7 @@ export interface Task {
   complete: boolean;
   tags: string[];
   due: string;
-  user: number;
+  userId: string;
 }
 
 export interface TaskParams {
@@ -20,5 +22,5 @@ export interface TaskParams {
 export interface Tag {
   _id: string;
   name: string;
-  user: number;
+  userId: string;
 }

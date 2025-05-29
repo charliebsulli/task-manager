@@ -88,7 +88,7 @@ export default function FilterableTaskList({
       complete: false,
       tags: tags,
       due: due,
-      user: 0,
+      userId: "temp", // server will insert for correct user
     };
 
     // make API request to create
@@ -115,7 +115,7 @@ export default function FilterableTaskList({
     let newTag: Tag = {
       _id: "temp",
       name: name,
-      user: 0,
+      userId: "none", // server will assign correct id
     };
 
     createTagMutation.mutate(newTag, {

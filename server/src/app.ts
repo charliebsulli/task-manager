@@ -1,6 +1,7 @@
 import express from "express";
 import tasks from "./routes/tasks";
 import tags from "./routes/tags";
+import auth from "./routes/auth";
 import "dotenv/config";
 import cors from "cors";
 const app = express();
@@ -12,10 +13,17 @@ app.use(
   })
 );
 
-// API routes
-app.use("/api/tasks", tasks);
+app.get("/", (req, res) => {
+  res.send("task-manager API");
+});
 
-app.use("/api/tags", tags);
+// auth routes
+app.use("/api/auth", auth);
+
+// API routes
+app.use("/api/users/current/tasks", tasks);
+
+app.use("/api/users/current/tags", tags);
 
 app.listen(port, () => {
   console.log(`Tasks API listening on port ${port}`);
