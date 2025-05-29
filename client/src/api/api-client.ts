@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 export interface Credentials {
   username: string;
@@ -17,10 +18,31 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-api.interceptors.response.use();
-// if a user is logged in, send an authentication header
-// with the JWT with every request
-
-// if the JWT is expired, send a refresh token to /refresh-token
-
-// if the JWT is invalid, clear it, redirect to login page
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    if (isAxiosError(error)) {
+      if (error.status === 401) {
+        // all other 401s can be redirected to login
+        if (error.response?.data.code === "AccessTokenExpired") {
+          // attempt to use refresh token
+          const refresh = await api.post("/api/auth/refresh-token");
+          if (refresh.status === 200) {
+            localStorage.setItem("accessToken", refresh.data.accessToken);
+            localStorage.setItem("refreshToken", refresh.data.refreshToken);
+            // React Query will make the request again
+          } else {
+            localStorage.clear();
+            window.location.href = "/auth/login";
+          }
+        } else {
+          localStorage.clear();
+          window.location.href = "/auth/login";
+        }
+      }
+    }
+    return error;
+  }
+);
