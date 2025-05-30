@@ -107,7 +107,7 @@ export default function TaskItem({
           <TagList tagNames={getTagNames(task.tags)} />
         </div>
         <DueDateTime dueDateTime={task.due} />
-        <EditButton onClick={handleEditClick} />
+        {!editing && <EditButton onClick={handleEditClick} />}
         <DeleteButton onClick={onDelete} />
       </div>
       {editing && (
