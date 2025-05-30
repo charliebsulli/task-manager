@@ -9,9 +9,26 @@ on:
   pull_request:
     branches: ["main"]
 
+env:
+  PORT: 8080
+  DB_CONNECTION_STRING: "mongodb://127.0.0.1:27017/"
+  DB_NAME: "test"
+  ACCESS_TOKEN_SECRET: "myAccessTokenSecret"
+  REFRESH_TOKEN_SECRET: "myRefreshTokenSecret"
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo
+        options: >-
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 27017:27017
 
     defaults:
       run:
