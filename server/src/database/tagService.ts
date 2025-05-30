@@ -2,7 +2,7 @@ import { Tag } from "../../../shared/types";
 import { ObjectId } from "mongodb";
 import database from "./database";
 
-const tagsCollection = database.collection("tags");
+export const tagsCollection = database.collection("tags");
 
 // get all Tags
 export async function getTags(userId: string) {

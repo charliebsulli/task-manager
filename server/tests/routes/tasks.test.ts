@@ -9,7 +9,7 @@ import { ObjectId } from "mongodb";
 import { Server } from "node:http";
 
 // mock auth middleware
-jest.mock("../../src/routes/auth", () => {
+jest.mock("../../src/middleware/ensureAuthenticated", () => {
   return {
     ensureAuthenticated: jest.fn((req, res, next) => {
       req.user = { id: "test-user" }; // userId of current user for tests
@@ -50,7 +50,7 @@ const sampleTasks = [
   },
 ];
 
-describe("Test /tasks endpoint", () => {
+describe("Test tasks routes", () => {
   let app: Express;
   let server: Server;
   let sampleTaskIds: { [key: number]: ObjectId };

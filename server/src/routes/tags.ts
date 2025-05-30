@@ -1,6 +1,6 @@
 import express from "express";
 import { createTag, deleteTag, getTag, getTags } from "../database/tagService";
-import { ensureAuthenticated } from "./auth";
+import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
 import { getErrorMessage } from "../utils/utils";
 
 const router = express.Router();
