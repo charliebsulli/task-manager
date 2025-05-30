@@ -25,6 +25,8 @@ app.use("/api/users/current/tasks", tasks);
 
 app.use("/api/users/current/tags", tags);
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Tasks API listening on port ${port}`);
 });
+
+export { app, server };

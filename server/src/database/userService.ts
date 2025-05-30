@@ -1,8 +1,9 @@
 import database from "./database";
 
-const usersCollection = database.collection("users");
-const userRefreshTokensCollection = database.collection("userRefreshTokens");
-const invalidTokensCollection = database.collection("invalidTokens");
+export const usersCollection = database.collection("users");
+export const userRefreshTokensCollection =
+  database.collection("userRefreshTokens");
+export const invalidTokensCollection = database.collection("invalidTokens");
 
 export async function findUser(username: string) {
   const user = await usersCollection.findOne({ username });

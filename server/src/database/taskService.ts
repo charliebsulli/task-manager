@@ -2,7 +2,7 @@ import { Task } from "../../../shared/types";
 import { ObjectId } from "mongodb";
 import database from "./database";
 
-const tasksCollection = database.collection("tasks");
+export const tasksCollection = database.collection("tasks");
 
 // get all Tasks
 export async function getTasks(userId: string) {

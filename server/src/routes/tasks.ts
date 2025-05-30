@@ -6,7 +6,7 @@ import {
   getTasks,
   getTask,
 } from "../database/taskService";
-import { ensureAuthenticated } from "./auth";
+import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
 import { getErrorMessage } from "../utils/utils";
 const router = express.Router();
 
