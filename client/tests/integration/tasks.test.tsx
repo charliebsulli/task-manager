@@ -3,6 +3,8 @@ import { Tag, Task } from "../../../shared/types";
 import { server } from "../../src/mocks/node";
 import FilterableTaskList from "../../src/components/FilterableTaskList";
 import userEvent from "@testing-library/user-event";
+import { describe, test, beforeAll, expect } from "vitest";
+import "@testing-library/jest-dom";
 
 describe("Task integration tests", () => {
   const fakeTasks: Task[] = [
@@ -30,7 +32,9 @@ describe("Task integration tests", () => {
   ];
 
   beforeAll(() => {
-    server.listen();
+    server.listen({
+      onUnhandledRequest: "warn",
+    });
   });
 
   test("Create a task", async () => {
@@ -40,18 +44,29 @@ describe("Task integration tests", () => {
 
     // create a new task
     const taskInput = screen.getByPlaceholderText("Task...");
-    userEvent.type(taskInput, "New Task");
+    await userEvent.type(taskInput, "New Task");
     const dateInput = screen.getByPlaceholderText(/Due/);
-    userEvent.type(dateInput, "6/1");
+    await userEvent.type(dateInput, "6/1");
     const tagSelect = screen.getByRole("combobox");
-    userEvent.selectOptions(tagSelect, "tag1");
+    await userEvent.selectOptions(tagSelect, "tag1");
     const submit = screen.getByText(/submit/i);
-    userEvent.click(submit);
+    await userEvent.click(submit);
 
     // check that the new task appears in the list
     expect(screen.getByText("New Task")).toBeInTheDocument();
   });
-  //   test("Edit a task", async () => {});
+
+  // maybe wait on this until I change edit form
+  test("Edit a task", async () => {
+    render(
+      <FilterableTaskList startingTasks={fakeTasks} startingTags={fakeTags} />
+    );
+
+    const editButton = screen.getAllByText("Edit")[0];
+    await userEvent.click(editButton);
+    const taskInput = screen.getAllByPlaceholderText("Task...")[0];
+    await userEvent.type(taskInput, "Edited");
+  });
   //   test("Change task status", async () => {});
   //   test("Delete a task", async () => {});
 });

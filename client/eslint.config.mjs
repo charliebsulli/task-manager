@@ -14,8 +14,25 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
-  reactHooks.configs["recommended-latest"],
-  pluginQuery.configs["flat/recommended"],
+  // custom config works, recommended-latest was not working
+  {
+    files: ["**/*.{ts,tsx}"],
+    plugins: { "react-hooks": reactHooks },
+    // ...
+    rules: {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+    },
+  },
+  // recommended flat config was also not working
+  {
+    plugins: {
+      "@tanstack/query": pluginQuery,
+    },
+    rules: {
+      "@tanstack/query/exhaustive-deps": "warn",
+    },
+  },
   eslintConfigPrettier,
 ];
 
