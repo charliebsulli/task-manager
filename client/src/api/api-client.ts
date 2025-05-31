@@ -1,5 +1,4 @@
 import axios, { isAxiosError } from "axios";
-import { useRouter } from "next/navigation";
 
 export interface Credentials {
   username: string;
@@ -23,6 +22,7 @@ api.interceptors.response.use(
     return response;
   },
   async (error) => {
+    // handle errors to check for login redirects
     if (isAxiosError(error)) {
       if (error.status === 401) {
         // all other 401s can be redirected to login
@@ -43,6 +43,6 @@ api.interceptors.response.use(
         }
       }
     }
-    return error;
+    return Promise.reject(error); // if we are not redirecting, reject so the error is thrown
   }
 );

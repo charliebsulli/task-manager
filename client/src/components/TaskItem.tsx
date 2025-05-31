@@ -81,7 +81,7 @@ export default function TaskItem({
   // this implicitly but badly handles case where a Tag is deleted from
   // the database
   function getTagNames(tagIds: string[]) {
-    let tagNames = [];
+    const tagNames = [];
     for (let i = 0; i < tagIds.length; i++) {
       const name = allTags.get(tagIds[i])?.name;
       if (name) {

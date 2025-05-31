@@ -4,9 +4,14 @@ import { http, HttpResponse } from "msw";
 export const handlers = [
   http.post(
     process.env.NEXT_PUBLIC_API_URL + "/api/users/current/tasks",
-    ({ request }) => {
-      console.log(`Request from ${request.url} caught by MSW`);
-      return HttpResponse.json({ status: 200 });
+    () => {
+      return new HttpResponse(null, { status: 200 });
+    }
+  ),
+  http.put(
+    process.env.NEXT_PUBLIC_API_URL + "/api/users/current/tasks/:taskId",
+    () => {
+      return new HttpResponse(null, { status: 204 });
     }
   ),
 ];

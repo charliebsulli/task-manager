@@ -73,8 +73,10 @@ export default function FilterableTaskList({
         const newTasks = new Map(tasks);
         newTasks.set(_id, newTask);
         setTasks(newTasks);
+        console.log("edit success");
       },
       onError: (error) => {
+        console.log("edit mutation failed");
         console.log(error.message);
       },
     });

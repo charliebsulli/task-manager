@@ -57,16 +57,25 @@ describe("Task integration tests", () => {
   });
 
   // maybe wait on this until I change edit form
-  test("Edit a task", async () => {
+  // test("Edit a task", async () => {
+  //   render(
+  //     <FilterableTaskList startingTasks={fakeTasks} startingTags={fakeTags} />
+  //   );
+
+  //   const editButton = screen.getAllByText("Edit")[0];
+  //   await userEvent.click(editButton);
+  //   const taskInput = screen.getAllByPlaceholderText("Task...")[0];
+  //   await userEvent.type(taskInput, "Edited");
+  // });
+  test("Change task status", async () => {
     render(
       <FilterableTaskList startingTasks={fakeTasks} startingTags={fakeTags} />
     );
 
-    const editButton = screen.getAllByText("Edit")[0];
-    await userEvent.click(editButton);
-    const taskInput = screen.getAllByPlaceholderText("Task...")[0];
-    await userEvent.type(taskInput, "Edited");
+    const checkbox = screen.getAllByRole("checkbox")[2]; // checkbox for task1
+    await userEvent.click(checkbox);
+
+    expect(checkbox).toBeChecked();
   });
-  //   test("Change task status", async () => {});
   //   test("Delete a task", async () => {});
 });
