@@ -15,7 +15,7 @@ describe("TaskForm component", () => {
     ["tagId2", tag2],
   ]);
 
-  const onCreate = jest.fn();
+  const onCreate = vi.fn();
 
   test("Task name input updates with user input", async () => {
     render(<TaskForm onCreate={onCreate} tags={tags} />);

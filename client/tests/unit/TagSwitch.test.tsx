@@ -3,12 +3,13 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import "@testing-library/jest-dom";
+import { vi } from "vitest";
 
 describe("TagSwitch component", () => {
   const name = "Test Tag";
   const status = false;
-  const onStatusChange = jest.fn();
-  const onDelete = jest.fn();
+  const onStatusChange = vi.fn();
+  const onDelete = vi.fn();
 
   test("Renders with tag name", () => {
     render(

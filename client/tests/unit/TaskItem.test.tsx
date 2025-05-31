@@ -1,14 +1,17 @@
-jest.mock("../../src/components/TaskForm");
-
 import TaskItem from "../../src/components/TaskItem";
 import TaskForm from "../../src/components/TaskForm";
 import { Tag, Task } from "../../../shared/types";
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "../test-utils";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import "@testing-library/jest-dom";
+import { vi } from "vitest";
 
-(TaskForm as jest.Mock).mockImplementation(() => <p>Task Edit Form</p>);
+vi.mock("../../src/components/TaskForm", () => ({
+  default: vi.fn(() => <p>Task Edit Form</p>),
+}));
+
+// (TaskForm as jest.Mock).mockImplementation(() => <p>Task Edit Form</p>);
 
 describe("TaskItem component", () => {
   const task: Task = {
@@ -28,9 +31,9 @@ describe("TaskItem component", () => {
     ["tagId2", tag2],
   ]);
 
-  const onStatusChange = jest.fn();
-  const onDelete = jest.fn();
-  const onEditSubmit = jest.fn();
+  const onStatusChange = vi.fn();
+  const onDelete = vi.fn();
+  const onEditSubmit = vi.fn();
 
   const props = {
     task,
@@ -41,7 +44,7 @@ describe("TaskItem component", () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks(); // clear mock calls before each test
+    vi.clearAllMocks(); // clear mock calls before each test
   });
 
   test("Renders task with name and date", async () => {

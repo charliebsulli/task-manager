@@ -7,7 +7,6 @@ import TaskList from "./TaskList";
 
 import { useCreateTask } from "@/api/tasks/create-task";
 
-import "./components.css";
 import { useDeleteTask } from "@/api/tasks/delete-task";
 import { useUpdateTask } from "@/api/tasks/update-task";
 import { useCreateTag } from "@/api/tags/create-tag";

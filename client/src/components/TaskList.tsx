@@ -2,7 +2,6 @@ import { Task, TaskParams, Tag } from "../../../shared/types";
 import TaskHeader from "./TaskHeader";
 import TaskItem from "./TaskItem";
 import TaskForm from "./TaskForm";
-import "./components.css";
 import { NONE } from "./FilterableTaskList";
 
 export default function TaskList({
