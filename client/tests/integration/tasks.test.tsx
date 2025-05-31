@@ -67,6 +67,7 @@ describe("Task integration tests", () => {
   //   const taskInput = screen.getAllByPlaceholderText("Task...")[0];
   //   await userEvent.type(taskInput, "Edited");
   // });
+
   test("Change task status", async () => {
     render(
       <FilterableTaskList startingTasks={fakeTasks} startingTags={fakeTags} />
@@ -77,5 +78,19 @@ describe("Task integration tests", () => {
 
     expect(checkbox).toBeChecked();
   });
-  //   test("Delete a task", async () => {});
+
+  test("Delete a task", async () => {
+    render(
+      <FilterableTaskList startingTasks={fakeTasks} startingTags={fakeTags} />
+    );
+
+    const deleteButton = screen.getAllByText("Delete")[0];
+    await userEvent.click(deleteButton);
+
+    expect(screen.queryByText("Test Task 1")).not.toBeInTheDocument();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
 });

@@ -57,7 +57,9 @@ function TagList({ tagNames }: { tagNames: string[] }) {
 function TagItem({ tagName }: { tagName: string }) {
   return (
     <span className="bg-slate-300 rounded h-6">
-      <p className="mx-1">{tagName}</p>
+      <p data-testid="tag-on-task" className="mx-1">
+        {tagName}
+      </p>
     </span>
   );
 }

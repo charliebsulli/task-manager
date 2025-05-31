@@ -73,10 +73,8 @@ export default function FilterableTaskList({
         const newTasks = new Map(tasks);
         newTasks.set(_id, newTask);
         setTasks(newTasks);
-        console.log("edit success");
       },
       onError: (error) => {
-        console.log("edit mutation failed");
         console.log(error.message);
       },
     });
@@ -150,7 +148,7 @@ export default function FilterableTaskList({
   }
 
   // update filter
-  // _id is the _id of the task to change the filter to
+  // _id is the _id of the tag to change the filter to
   function handleFilterChange(_id: string) {
     if (activeTag === _id) {
       setActiveTag(NONE);
