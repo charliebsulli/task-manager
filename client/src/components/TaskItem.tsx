@@ -57,7 +57,9 @@ function TagList({ tagNames }: { tagNames: string[] }) {
 function TagItem({ tagName }: { tagName: string }) {
   return (
     <span className="bg-slate-300 rounded h-6">
-      <p className="mx-1">{tagName}</p>
+      <p data-testid="tag-on-task" className="mx-1">
+        {tagName}
+      </p>
     </span>
   );
 }
@@ -81,7 +83,7 @@ export default function TaskItem({
   // this implicitly but badly handles case where a Tag is deleted from
   // the database
   function getTagNames(tagIds: string[]) {
-    let tagNames = [];
+    const tagNames = [];
     for (let i = 0; i < tagIds.length; i++) {
       const name = allTags.get(tagIds[i])?.name;
       if (name) {
@@ -107,7 +109,7 @@ export default function TaskItem({
           <TagList tagNames={getTagNames(task.tags)} />
         </div>
         <DueDateTime dueDateTime={task.due} />
-        <EditButton onClick={handleEditClick} />
+        {!editing && <EditButton onClick={handleEditClick} />}
         <DeleteButton onClick={onDelete} />
       </div>
       {editing && (

@@ -7,7 +7,6 @@ import TaskList from "./TaskList";
 
 import { useCreateTask } from "@/api/tasks/create-task";
 
-import "./components.css";
 import { useDeleteTask } from "@/api/tasks/delete-task";
 import { useUpdateTask } from "@/api/tasks/update-task";
 import { useCreateTag } from "@/api/tags/create-tag";
@@ -149,7 +148,7 @@ export default function FilterableTaskList({
   }
 
   // update filter
-  // _id is the _id of the task to change the filter to
+  // _id is the _id of the tag to change the filter to
   function handleFilterChange(_id: string) {
     if (activeTag === _id) {
       setActiveTag(NONE);

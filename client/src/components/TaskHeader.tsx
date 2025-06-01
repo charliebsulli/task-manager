@@ -1,8 +1,8 @@
-import { useLogout } from "@/api/auth/logout";
+import { useLogout } from "../api/auth/logout";
 import { useRouter } from "next/navigation";
 
 export default function TaskHeader() {
-  const router = useRouter();
+  // const router = useRouter();
   const logoutMutation = useLogout();
 
   function handleLogoutClick() {

@@ -32,7 +32,6 @@ export default function TaskForm({
   }
 
   function handleTagChange(tagId: string) {
-    console.log(tagId);
     setChosenTags([tagId]);
   }
 
