@@ -1,24 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TaskParams, Tag } from "../../../shared/types";
 
-export default function TaskForm({
-  onCreate,
+export default function TaskEditForm({
+  startingTask,
+  onSubmit,
+  onCancel,
   tags,
-  defaultTag,
 }: {
-  onCreate: (newParams: TaskParams) => void;
+  startingTask: TaskParams;
+  onSubmit: (newParams: TaskParams) => void;
+  onCancel: () => void;
   tags: Map<string, Tag>;
-  defaultTag: string;
 }) {
-  const [taskName, setTaskName] = useState("");
-  const [date, setDate] = useState("");
-  const [chosenTags, setChosenTags] = useState([defaultTag]);
-
-  // when defaultTag changes, must useEffect to update chosenTags
-  // otherwise component will not re-render with new defaultTag
-  useEffect(() => {
-    setChosenTags([defaultTag]);
-  }, [defaultTag]);
+  const [taskName, setTaskName] = useState(startingTask.name);
+  const [date, setDate] = useState(startingTask.due);
+  const [chosenTags, setChosenTags] = useState(startingTask.tags);
 
   function handleTaskNameChange(newTaskName: string) {
     setTaskName(newTaskName);
@@ -28,19 +24,17 @@ export default function TaskForm({
     setDate(newDate);
   }
 
-  function handleCreateClick() {
+  function handleTagChange(tagId: string) {
+    setChosenTags([tagId]);
+  }
+
+  function handleSubmitClick() {
     const params: TaskParams = {
       name: taskName,
       tags: chosenTags,
       due: date,
     };
-    onCreate(params);
-    setTaskName("");
-    setDate("");
-  }
-
-  function handleTagChange(tagId: string) {
-    setChosenTags([tagId]);
+    onSubmit(params);
   }
 
   const tagOptions = Array.from(tags, ([_id, tag]) => (
@@ -71,9 +65,22 @@ export default function TaskForm({
         <option value="">Select tag...</option>
         {tagOptions}
       </select>
-      <button type="button" className="btn-primary" onClick={handleCreateClick}>
-        Submit
-      </button>
+      <div className="flex flex-row">
+        <button
+          type="button"
+          className="btn-primary w-1/2 mr-0.5"
+          onClick={onCancel}
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          className="btn-primary w-1/2 ml-0.5"
+          onClick={handleSubmitClick}
+        >
+          Submit
+        </button>
+      </div>
     </form>
   );
 }

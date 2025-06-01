@@ -52,7 +52,7 @@ export default function TaskList({
     <div className="w-3/4 mt-2">
       <TaskHeader />
       {listItems}
-      <TaskForm onCreate={onCreate} tags={tags} />
+      <TaskForm onCreate={onCreate} tags={tags} defaultTag={activeTag} />
     </div>
   );
 }

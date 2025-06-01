@@ -11,7 +11,7 @@ import { useDeleteTask } from "@/api/tasks/delete-task";
 import { useUpdateTask } from "@/api/tasks/update-task";
 import { useCreateTag } from "@/api/tags/create-tag";
 import { useDeleteTag } from "@/api/tags/delete-tag";
-export const NONE = "none";
+export const NONE = "";
 
 /**
  * Given an array of Tasks or Tags, constructs a map using the `_id` field as a key
@@ -95,10 +95,12 @@ export default function FilterableTaskList({
       onSuccess: (data) => {
         // if it succeeds, add this task to local state
         // first, replace with _id assigned by DB
-        const newId = data.data;
+        const newId = data.data.taskId;
+        const userId = data.data.userId;
         newTask = {
           ...newTask,
           _id: newId,
+          userId,
         };
         const newTasks = new Map(tasks);
         newTasks.set(newId, newTask);
@@ -119,10 +121,12 @@ export default function FilterableTaskList({
 
     createTagMutation.mutate(newTag, {
       onSuccess: (data) => {
-        const newId = data.data;
+        const newId = data.data.tagId;
+        const userId = data.data.userId;
         newTag = {
           ...newTag,
           _id: newId,
+          userId,
         };
         const newTags = new Map(tags);
         newTags.set(newId, newTag);
