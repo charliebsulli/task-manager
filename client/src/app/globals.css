@@ -2,6 +2,9 @@
 
 @layer components {
   .btn-primary {
-    @apply rounded bg-slate-300  hover:bg-slate-400;
+    @apply rounded bg-slate-300 border border-slate-400 
+    drop-shadow-sm drop-shadow-slate-300 
+    /* inset-ring inset-ring-slate-200 */
+    hover:bg-slate-400;
   }
 }

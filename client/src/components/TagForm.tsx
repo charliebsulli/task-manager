@@ -12,6 +12,9 @@ export default function TagForm({
   }
 
   function handleCreateClick() {
+    if (tagName.trim() === "") {
+      return;
+    }
     onCreate(tagName);
     setTagName("");
   }

@@ -29,6 +29,9 @@ export default function TaskForm({
   }
 
   function handleCreateClick() {
+    if (taskName.trim() === "") {
+      return;
+    }
     const params: TaskParams = {
       name: taskName,
       tags: chosenTags,

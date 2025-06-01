@@ -6,7 +6,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { vi } from "vitest";
 
-vi.mock("../../src/components/TaskForm", () => ({
+vi.mock("../../src/components/TaskEditForm", () => ({
   default: vi.fn(() => <p>Task Edit Form</p>),
 }));
 
