@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { TaskParams, Tag } from "../../../shared/types";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function TaskEditForm({
   startingTask,
@@ -20,9 +22,9 @@ export default function TaskEditForm({
     setTaskName(newTaskName);
   }
 
-  function handleDateChange(newDate: string) {
-    setDate(newDate);
-  }
+  // function handleDateChange(newDate: string) {
+  //   setDate(newDate);
+  // }
 
   function handleTagChange(tagId: string) {
     setChosenTags([tagId]);
@@ -51,12 +53,13 @@ export default function TaskEditForm({
         value={taskName}
         onChange={(e) => handleTaskNameChange(e.target.value)}
       ></input>
-      <input
-        type="text"
-        placeholder="Due date..."
-        value={date}
-        onChange={(e) => handleDateChange(e.target.value)}
-      ></input>
+      <div className="m-w-1/6">
+        <DatePicker
+          dateFormat={"MM/dd"}
+          selected={date}
+          onChange={(date) => setDate(date)}
+        />
+      </div>
       <select
         name="tags"
         value={chosenTags[0]}

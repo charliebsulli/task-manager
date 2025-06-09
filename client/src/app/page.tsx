@@ -19,9 +19,20 @@ export default function Home() {
     return <span>Error: tasks or tags failed to load.</span>;
   }
 
+  // construct date objects from the stored date strings
+  const taskList = tasks.data.data;
+  const correctedTaskList = [];
+  for (let i = 0; i < taskList.length; i++) {
+    const correctedTask: Task = {
+      ...taskList[i],
+      due: new Date(taskList[i].due), // convert string recieved from request back into Date
+    };
+    correctedTaskList.push(correctedTask);
+  }
+
   return (
     <FilterableTaskList
-      startingTasks={tasks.data.data}
+      startingTasks={correctedTaskList}
       startingTags={tags.data.data}
     ></FilterableTaskList>
   );
