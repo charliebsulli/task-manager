@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { api } from "../api-client";
 
 export const refresh = (refreshToken: string) => {
-  return api.post("/api/auth/refresh", refreshToken);
+  return api.post("/api/auth/refresh", { refreshToken });
 };
 
 export const useRefresh = () => {

@@ -28,14 +28,19 @@ api.interceptors.response.use(
         // all other 401s can be redirected to login
         if (error.response?.data.code === "AccessTokenExpired") {
           // attempt to use refresh token
-          const refresh = await api.post("/api/auth/refresh-token");
-          if (refresh.status === 200) {
-            localStorage.setItem("accessToken", refresh.data.accessToken);
-            localStorage.setItem("refreshToken", refresh.data.refreshToken);
-            // React Query will make the request again
-          } else {
-            localStorage.clear();
-            window.location.href = "/auth/login";
+          const localRefreshToken = localStorage.getItem("refreshToken");
+          if (localRefreshToken) {
+            const refresh = await api.post("/api/auth/refresh-token", {
+              refreshToken: localRefreshToken,
+            });
+            if (refresh.status === 200) {
+              localStorage.setItem("accessToken", refresh.data.accessToken);
+              localStorage.setItem("refreshToken", refresh.data.refreshToken);
+              // React Query will make the request again
+            } else {
+              localStorage.clear();
+              window.location.href = "/auth/login";
+            }
           }
         } else {
           localStorage.clear();
