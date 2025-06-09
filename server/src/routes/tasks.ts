@@ -56,7 +56,7 @@ router.post("/", async (req, res) => {
       userId: req.user?.id,
     };
     const taskId = await createTask(task);
-    res.json({ taskId });
+    res.json({ taskId, userId: task.userId });
   } catch (error) {
     res.status(500).json({ message: getErrorMessage(error) });
   }

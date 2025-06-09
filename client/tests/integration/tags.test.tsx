@@ -13,7 +13,7 @@ describe("Tag integration tests", () => {
       name: "Test Task 1",
       complete: false,
       tags: ["tag1", "tag2"],
-      due: "5/30",
+      due: new Date(),
       userId: "user1",
     },
     {
@@ -21,7 +21,7 @@ describe("Tag integration tests", () => {
       name: "Test Task 2",
       complete: true,
       tags: ["tag2"],
-      due: "5/31",
+      due: new Date(),
       userId: "user1",
     },
   ];

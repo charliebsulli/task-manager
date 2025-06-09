@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
       userId: req.user?.id,
     };
     const tagId = await createTag(tag);
-    res.json({ tagId });
+    res.json({ tagId, userId: tag.userId });
   } catch (error) {
     res.status(500).json({ message: getErrorMessage(error) });
   }

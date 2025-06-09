@@ -1,5 +1,4 @@
 import { useLogout } from "../api/auth/logout";
-import { useRouter } from "next/navigation";
 
 export default function TaskHeader() {
   // const router = useRouter();
@@ -22,8 +21,12 @@ export default function TaskHeader() {
   return (
     <div className="flex flex-row">
       <h1 className="ml-1.5 mt-1 font-bold w-11/12">Tasks</h1>
-      <button type="button" className="btn-primary" onClick={handleLogoutClick}>
-        <p className="mx-2">Logout</p>
+      <button
+        type="button"
+        className="btn-primary mx-1.5 px-2"
+        onClick={handleLogoutClick}
+      >
+        Logout
       </button>
     </div>
   );

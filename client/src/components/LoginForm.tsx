@@ -62,6 +62,28 @@ export default function LoginForm({ register }: { register: boolean }) {
     );
   }
 
+  function RegisterRedirect() {
+    return (
+      <button
+        className="text-blue-500 hover:underline my-2"
+        onClick={() => router.push("/auth/register")}
+      >
+        Register
+      </button>
+    );
+  }
+
+  function LoginRedirect() {
+    return (
+      <button
+        className="text-blue-500 hover:underline my-2"
+        onClick={() => router.push("/auth/login")}
+      >
+        Login
+      </button>
+    );
+  }
+
   return (
     <div className="flex flex-col w-1/3 bg-white rounded">
       <input
@@ -78,6 +100,7 @@ export default function LoginForm({ register }: { register: boolean }) {
         onChange={(e) => onPasswordChange(e.target.value)}
       ></input>
       {register ? <RegisterButton /> : <LoginButton />}
+      {register ? <LoginRedirect /> : <RegisterRedirect />}
     </div>
   );
 }

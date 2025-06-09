@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Task, TaskParams, Tag } from "../../../shared/types";
-import TaskForm from "./TaskForm";
+import TaskEditForm from "./TaskEditForm";
 
 function Checkbox({
   status,
@@ -11,7 +11,7 @@ function Checkbox({
 }) {
   return (
     <input
-      className="checkbox"
+      className="mx-2"
       type="checkbox"
       checked={status}
       onChange={onStatusChange}
@@ -23,7 +23,7 @@ function DeleteButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       type="button"
-      className="mr-1.5 text-red-300 hover:text-red-500"
+      className="mr-1.5 text-red-300 hover:text-red-500 hover:bg-red-300 rounded px-1.5"
       onClick={onClick}
     >
       Delete
@@ -35,7 +35,7 @@ function EditButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       type="button"
-      className="mr-4 text-slate-300 hover:text-slate-500"
+      className="mr-4 text-slate-300 hover:text-slate-500 hover:bg-slate-300 rounded px-1.5"
       onClick={onClick}
     >
       Edit
@@ -51,7 +51,7 @@ function TagList({ tagNames }: { tagNames: string[] }) {
   const listTags = tagNames.map((tagName, idx) => (
     <TagItem key={idx} tagName={tagName} />
   ));
-  return <div className="tags-container">{listTags}</div>;
+  return <div className="flex flex-row gap-1">{listTags}</div>;
 }
 
 function TagItem({ tagName }: { tagName: string }) {
@@ -102,22 +102,26 @@ export default function TaskItem({
 
   return (
     <>
-      <div className="flex flex-row">
-        <Checkbox status={task.complete} onStatusChange={onStatusChange} />
-        <div className="flex flex-row gap-1 flex-5/12">
-          <p className="">{task.name}</p>
-          <TagList tagNames={getTagNames(task.tags)} />
+      {!editing && (
+        <div className="flex flex-row">
+          <Checkbox status={task.complete} onStatusChange={onStatusChange} />
+          <div className="flex flex-row gap-1 flex-5/12">
+            <p className="">{task.name}</p>
+            <TagList tagNames={getTagNames(task.tags)} />
+          </div>
+          <DueDateTime dueDateTime={task.due.toDateString()} />
+          {!editing && <EditButton onClick={handleEditClick} />}
+          <DeleteButton onClick={onDelete} />
         </div>
-        <DueDateTime dueDateTime={task.due} />
-        {!editing && <EditButton onClick={handleEditClick} />}
-        <DeleteButton onClick={onDelete} />
-      </div>
+      )}
       {editing && (
-        <TaskForm
-          onCreate={(newParams) => {
+        <TaskEditForm
+          startingTask={{ name: task.name, due: task.due, tags: task.tags }}
+          onSubmit={(newParams) => {
             handleEditClick();
             onEditSubmit(newParams);
           }}
+          onCancel={handleEditClick}
           tags={allTags}
         />
       )}

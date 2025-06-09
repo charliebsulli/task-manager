@@ -49,10 +49,10 @@ export default function TaskList({
   );
 
   return (
-    <div className="w-3/4 mt-2">
+    <div className="w-3/4 mt-2 flex flex-col gap-0.5">
       <TaskHeader />
       {listItems}
-      <TaskForm onCreate={onCreate} tags={tags} />
+      <TaskForm onCreate={onCreate} tags={tags} defaultTag={activeTag} />
     </div>
   );
 }

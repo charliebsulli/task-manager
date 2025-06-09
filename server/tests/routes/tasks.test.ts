@@ -31,21 +31,21 @@ const sampleTasks = [
     name: "Test One",
     complete: false,
     tags: [],
-    due: "none",
+    due: new Date(),
     userId: "test-user",
   },
   {
     name: "Test Two",
     complete: false,
     tags: [],
-    due: "none",
+    due: new Date(),
     userId: "test-user",
   },
   {
     name: "Test Three",
     complete: false,
     tags: [],
-    due: "none",
+    due: new Date(),
     userId: "other-user",
   },
 ];
@@ -93,7 +93,7 @@ describe("Test tasks routes", () => {
       name: "Replace",
       complete: true,
       tags: ["test"],
-      due: "today",
+      due: new Date(),
       userId: "test-user",
     };
 
@@ -117,7 +117,7 @@ describe("Test tasks routes", () => {
       name: "Create",
       complete: true,
       tags: ["test"],
-      due: "today",
+      due: new Date(),
       userId: "test-user",
     };
 

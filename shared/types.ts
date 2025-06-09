@@ -9,14 +9,14 @@ export interface Task {
   name: string;
   complete: boolean;
   tags: string[];
-  due: string;
+  due: Date;
   userId: string;
 }
 
 export interface TaskParams {
   name: string;
   tags: string[];
-  due: string;
+  due: Date;
 }
 
 export interface Tag {

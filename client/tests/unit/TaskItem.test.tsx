@@ -6,7 +6,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { vi } from "vitest";
 
-vi.mock("../../src/components/TaskForm", () => ({
+vi.mock("../../src/components/TaskEditForm", () => ({
   default: vi.fn(() => <p>Task Edit Form</p>),
 }));
 
@@ -17,7 +17,7 @@ describe("TaskItem component", () => {
     _id: "1",
     name: "Test Task",
     complete: false,
-    due: "2023-10-10T12:00:00Z",
+    due: new Date(),
     tags: ["tagId1", "tagId2"],
     userId: "test-user",
   };
@@ -50,7 +50,7 @@ describe("TaskItem component", () => {
     render(<TaskItem {...props} />);
 
     expect(screen.getByText(task.name)).toBeInTheDocument();
-    expect(screen.getByText(task.due)).toBeInTheDocument();
+    expect(screen.getByText(task.due.toDateString())).toBeInTheDocument();
   });
 
   test("Renders tag names", () => {
