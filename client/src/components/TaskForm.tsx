@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { TaskParams, Tag } from "../../../shared/types";
 import DatePicker from "react-datepicker";
-console.log("about to import datepicker CSS");
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function TaskForm({
