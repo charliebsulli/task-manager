@@ -27,9 +27,13 @@ export default function TaskForm({
     setTaskName(newTaskName);
   }
 
-  // function handleDateChange(newDate: string) {
-  //   setDate(newDate);
-  // }
+  function handleDateChange(date: Date | null) {
+    if (!date) {
+      setDate(new Date());
+    } else {
+      setDate(date);
+    }
+  }
 
   function handleCreateClick() {
     if (taskName.trim() === "") {
@@ -67,7 +71,7 @@ export default function TaskForm({
         <DatePicker
           dateFormat={"MM/dd"}
           selected={date}
-          onChange={(date) => setDate(date)}
+          onChange={(date) => handleDateChange(date)}
         />
       </div>
       <select

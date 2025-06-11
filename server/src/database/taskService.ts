@@ -1,4 +1,4 @@
-import { Task } from "../../../shared/types";
+import { Task } from "../shared/types";
 import { ObjectId } from "mongodb";
 import database from "./database";
 

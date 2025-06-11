@@ -8,7 +8,7 @@ export const refresh = (refreshToken: string) => {
 export const useRefresh = () => {
   return useMutation({
     mutationFn: (refreshToken: string) => refresh(refreshToken),
-    onSuccess(data, variables, context) {
+    onSuccess(data) {
       if (data.data.accessToken) {
         localStorage.setItem("accessToken", data.data.accessToken);
       }

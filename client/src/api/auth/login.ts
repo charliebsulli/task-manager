@@ -8,7 +8,7 @@ export const login = (credentials: Credentials) => {
 export const useLogin = () => {
   return useMutation({
     mutationFn: (credentials: Credentials) => login(credentials),
-    onSuccess(data, variables, context) {
+    onSuccess(data) {
       if (data.data.accessToken) {
         localStorage.setItem("accessToken", data.data.accessToken);
       }

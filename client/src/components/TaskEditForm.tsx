@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { TaskParams, Tag } from "../../../shared/types";
 import DatePicker from "react-datepicker";
-console.log("about to import datepicker css, edit form");
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function TaskEditForm({
@@ -31,6 +30,14 @@ export default function TaskEditForm({
     setChosenTags([tagId]);
   }
 
+  function handleDateChange(date: Date | null) {
+    if (!date) {
+      setDate(new Date());
+    } else {
+      setDate(date);
+    }
+  }
+
   function handleSubmitClick() {
     const params: TaskParams = {
       name: taskName,
@@ -58,7 +65,7 @@ export default function TaskEditForm({
         <DatePicker
           dateFormat={"MM/dd"}
           selected={date}
-          onChange={(date) => setDate(date)}
+          onChange={(date) => handleDateChange(date)}
         />
       </div>
       <select
