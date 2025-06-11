@@ -4,7 +4,9 @@
   "main": "src/app.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc",
+    "start": "node dist/app.js"
   },
   "author": "",
   "license": "ISC",

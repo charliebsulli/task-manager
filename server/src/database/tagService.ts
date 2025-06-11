@@ -1,4 +1,4 @@
-import { Tag } from "../../../shared/types";
+import { Tag } from "../shared/types";
 import { ObjectId } from "mongodb";
 import database from "./database";
 

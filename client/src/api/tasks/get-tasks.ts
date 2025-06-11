@@ -1,5 +1,4 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
-import { Task } from "../../../../shared/types";
 import { api } from "../api-client";
 
 export const getTasks = () => {
