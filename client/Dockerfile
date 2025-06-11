@@ -11,6 +11,9 @@ COPY client/package*.json .
 RUN npm ci
 
 FROM base AS builder
+
+ARG NEXT_PUBLIC_API_URL
+
 WORKDIR /app
 COPY shared ./shared
 
