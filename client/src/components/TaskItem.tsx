@@ -1,23 +1,8 @@
 import { useState } from "react";
 import { Task, TaskParams, Tag } from "../../../shared/types";
 import TaskEditForm from "./TaskEditForm";
-
-function Checkbox({
-  status,
-  onStatusChange,
-}: {
-  status: boolean;
-  onStatusChange: () => void;
-}) {
-  return (
-    <input
-      className="mx-2"
-      type="checkbox"
-      checked={status}
-      onChange={onStatusChange}
-    />
-  );
-}
+import DateDisplay from "./DateDisplay";
+import TaskCheckbox from "./TaskCheckbox";
 
 function DeleteButton({ onClick }: { onClick: () => void }) {
   return (
@@ -41,10 +26,6 @@ function EditButton({ onClick }: { onClick: () => void }) {
       Edit
     </button>
   );
-}
-
-function DueDateTime({ dueDateTime }: { dueDateTime: string }) {
-  return <p className="flex-5/12 ml-1">{dueDateTime}</p>;
 }
 
 function TagList({ tagNames }: { tagNames: string[] }) {
@@ -104,12 +85,15 @@ export default function TaskItem({
     <>
       {!editing && (
         <div className="flex flex-row">
-          <Checkbox status={task.complete} onStatusChange={onStatusChange} />
+          <TaskCheckbox
+            status={task.complete}
+            onStatusChange={onStatusChange}
+          />
           <div className="flex flex-row gap-1 flex-5/12">
             <p className="">{task.name}</p>
             <TagList tagNames={getTagNames(task.tags)} />
           </div>
-          <DueDateTime dueDateTime={task.due.toDateString()} />
+          <DateDisplay due={task.due} />
           {!editing && <EditButton onClick={handleEditClick} />}
           <DeleteButton onClick={onDelete} />
         </div>

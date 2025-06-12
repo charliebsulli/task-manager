@@ -22,6 +22,7 @@ export default function TaskList({
 }) {
   const [showComplete, setShowComplete] = useState(false);
   const [onlyOverdue, setOnlyOverdue] = useState(false);
+  const [sortByDue, setSortByDue] = useState(true);
 
   useEffect(() => {
     if (onlyOverdue) {
@@ -43,6 +44,10 @@ export default function TaskList({
     setOnlyOverdue(!onlyOverdue);
   }
 
+  function handleSortByDueToggle() {
+    setSortByDue(!sortByDue);
+  }
+
   // given a task, use state to determine whether it should be displayed
   function filterTask(task: Task): boolean {
     return (
@@ -53,11 +58,38 @@ export default function TaskList({
   }
 
   function isOverdue(task: Task): boolean {
-    return task.due.getTime() < Date.now() && !task.complete;
+    // get absolute year, month, date of task: these are set in UTC
+    const year = task.due.getUTCFullYear();
+    const month = task.due.getUTCMonth();
+    const date = task.due.getUTCDate();
+
+    // overdue is decided using local time zone
+    const now = new Date(Date.now());
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth();
+    const currentDate = now.getDate();
+
+    const datePassed =
+      currentYear >= year && currentMonth >= month && currentDate > date;
+    return datePassed && !task.complete;
   }
 
-  const listItems = Array.from(tasks, ([_id, task]) =>
-    filterTask(task) ? (
+  function sortTasks(tasks: Map<string, Task>): Map<string, Task> {
+    if (!sortByDue) {
+      return tasks;
+    }
+    const sortedTaskMap = new Map([...tasks].sort(compareByDate));
+    return sortedTaskMap;
+  }
+
+  function compareByDate(a: [string, Task], b: [string, Task]): number {
+    const aDue = a[1].due.getTime();
+    const bDue = b[1].due.getTime();
+    return aDue - bDue;
+  }
+
+  const listItems = Array.from(sortTasks(tasks), ([_id, task]) =>
+    filterTask(task) ? ( // can I use filterTask to hide the TaskItem rather than make it a span? allows animation
       <TaskItem
         key={_id}
         task={task}
@@ -81,7 +113,7 @@ export default function TaskList({
         allTags={tags}
       ></TaskItem>
     ) : (
-      <span key={_id}></span>
+      <span key={_id}></span> // this adds strange spacing b/c of margins
     )
   );
 
@@ -92,6 +124,8 @@ export default function TaskList({
         handleShowCompleteToggle={handleShowCompleteToggle}
         onlyOverdue={onlyOverdue}
         handleOnlyOverdueToggle={handleOnlyOverdueToggle}
+        sortByDue={sortByDue}
+        handleSortByDueToggle={handleSortByDueToggle}
       />
       {listItems}
       <TaskForm onCreate={onCreate} tags={tags} defaultTag={activeTag} />

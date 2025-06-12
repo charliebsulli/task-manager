@@ -1,5 +1,6 @@
 import { useLogout } from "../api/auth/logout";
 import OverdueToggle from "./OverdueToggle";
+import SortByDueToggle from "./SortByDueToggle";
 import StatusToggle from "./StatusToggle";
 
 export default function TaskHeader({
@@ -7,11 +8,15 @@ export default function TaskHeader({
   handleShowCompleteToggle,
   onlyOverdue,
   handleOnlyOverdueToggle,
+  sortByDue,
+  handleSortByDueToggle,
 }: {
   showComplete: boolean;
   handleShowCompleteToggle: () => void;
   onlyOverdue: boolean;
   handleOnlyOverdueToggle: () => void;
+  sortByDue: boolean;
+  handleSortByDueToggle: () => void;
 }) {
   // const router = useRouter();
   const logoutMutation = useLogout();
@@ -34,6 +39,10 @@ export default function TaskHeader({
   return (
     <div className="flex flex-row">
       <h1 className="ml-1.5 mt-1 font-bold w-8/12">Tasks</h1>
+      <SortByDueToggle
+        sortByDue={sortByDue}
+        handleChange={handleSortByDueToggle}
+      />
       <OverdueToggle
         onlyOverdue={onlyOverdue}
         handleChange={handleOnlyOverdueToggle}
