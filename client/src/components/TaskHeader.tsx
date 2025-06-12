@@ -1,6 +1,18 @@
 import { useLogout } from "../api/auth/logout";
+import OverdueToggle from "./OverdueToggle";
+import StatusToggle from "./StatusToggle";
 
-export default function TaskHeader() {
+export default function TaskHeader({
+  showComplete,
+  handleShowCompleteToggle,
+  onlyOverdue,
+  handleOnlyOverdueToggle,
+}: {
+  showComplete: boolean;
+  handleShowCompleteToggle: () => void;
+  onlyOverdue: boolean;
+  handleOnlyOverdueToggle: () => void;
+}) {
   // const router = useRouter();
   const logoutMutation = useLogout();
 
@@ -18,9 +30,18 @@ export default function TaskHeader() {
     });
   }
 
+  // not sure it makes sense for the task header to contain all of these components
   return (
     <div className="flex flex-row">
-      <h1 className="ml-1.5 mt-1 font-bold w-11/12">Tasks</h1>
+      <h1 className="ml-1.5 mt-1 font-bold w-8/12">Tasks</h1>
+      <OverdueToggle
+        onlyOverdue={onlyOverdue}
+        handleChange={handleOnlyOverdueToggle}
+      />
+      <StatusToggle
+        showComplete={showComplete}
+        handleChange={handleShowCompleteToggle}
+      />
       <button
         type="button"
         className="btn-primary mx-1.5 px-2"
