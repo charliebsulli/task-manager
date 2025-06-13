@@ -81,7 +81,7 @@ export default function TaskEditForm({
         <div className="flex flex-row">
           <button
             type="button"
-            className="btn-primary w-1/2 mr-0.5"
+            className="btn-secondary w-1/2 mr-0.5"
             onClick={onCancel}
           >
             Cancel

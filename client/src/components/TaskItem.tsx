@@ -21,7 +21,7 @@ function EditButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       type="button"
-      className=" text-slate-300 hover:text-slate-500 cursor-pointer scale-125"
+      className="mt-1 text-slate-300 hover:text-slate-500 cursor-pointer scale-125"
       onClick={onClick}
     >
       <LuPenLine />
@@ -85,7 +85,7 @@ export default function TaskItem({
   return (
     <>
       {!editing && (
-        <div className="flex flex-row py-0.5 group">
+        <div className="flex flex-row py-1.5 group shadow-2xs">
           <TaskCheckbox
             status={task.complete}
             onStatusChange={onStatusChange}

@@ -1,3 +1,5 @@
+import { LuTrash2 } from "react-icons/lu";
+
 export default function TagSwitch({
   name,
   status,
@@ -19,18 +21,17 @@ export default function TagSwitch({
       />
       <span
         role="status"
-        className="btn-primary flex group peer-checked:bg-slate-400 peer-checked:hover:bg-slate-400"
+        className="btn-secondary shadow:sm flex group peer-checked:bg-indigo-200 peer-checked:text-indigo-800"
       >
         <p className="flex-10/12 ml-1 select-none">{name}</p>
         <label className="scale-0 group-hover:scale-100">
           <button
             type="button"
             onClick={onDelete}
-            className="w-0 h-0 opacity-0 absolute"
-          ></button>
-          <span className="mr-1 text-red-300 hover:text-red-500 align-middle select-none">
-            X
-          </span>
+            className="text-slate-300 hover:text-slate-500 select-none"
+          >
+            <LuTrash2 />
+          </button>
         </label>
       </span>
     </label>

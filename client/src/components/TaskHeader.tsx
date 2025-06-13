@@ -53,7 +53,7 @@ export default function TaskHeader({
       />
       <button
         type="button"
-        className="btn-primary mx-1.5 px-2"
+        className="btn-secondary mx-1.5 px-2"
         onClick={handleLogoutClick}
       >
         Logout

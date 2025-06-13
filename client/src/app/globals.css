@@ -2,10 +2,23 @@
 
 @layer components {
   .btn-primary {
-    @apply rounded bg-slate-200 border border-slate-400 
-    drop-shadow-sm drop-shadow-slate-300 
-    cursor-pointer
-    /* inset-ring inset-ring-slate-200 */
-    hover:bg-slate-400;
+    @apply rounded cursor-pointer
+    text-white
+  bg-indigo-600 hover:bg-indigo-800
+  transition-colors duration-100;
+  }
+
+  .btn-secondary {
+    @apply rounded cursor-pointer bg-slate-50 text-slate-700
+    hover:bg-indigo-50 hover:text-indigo-700;
+  }
+
+  .btn-tag {
+    /* unused */
+    @apply rounded cursor-pointer bg-white text-slate-700 hover:bg-slate-50 shadow-sm;
+  }
+
+  .input-box {
+    @apply rounded border border-slate-300 px-1;
   }
 }
