@@ -88,10 +88,9 @@ export default function TaskList({
     return aDue - bDue;
   }
 
-  const listItems = Array.from(sortTasks(tasks), ([_id, task]) =>
-    filterTask(task) ? ( // can I use filterTask to hide the TaskItem rather than make it a span? allows animation
+  const listItems = Array.from(sortTasks(tasks), ([_id, task]) => (
+    <div key={_id} className={filterTask(task) ? "visible" : "collapse"}>
       <TaskItem
-        key={_id}
         task={task}
         onDelete={() => onDelete(task)}
         onStatusChange={() => {
@@ -111,14 +110,12 @@ export default function TaskList({
           onEdit(_id, newTask);
         }}
         allTags={tags}
-      ></TaskItem>
-    ) : (
-      <span key={_id}></span> // this adds strange spacing b/c of margins
-    )
-  );
+      />
+    </div>
+  ));
 
   return (
-    <div className="w-3/4 mt-2 flex flex-col gap-0.5">
+    <div className="w-3/4 mt-2 flex flex-col mx-5">
       <TaskHeader
         showComplete={showComplete}
         handleShowCompleteToggle={handleShowCompleteToggle}
@@ -128,6 +125,7 @@ export default function TaskList({
         handleSortByDueToggle={handleSortByDueToggle}
       />
       {listItems}
+      <hr className="mx-5 my-2 text-slate-400"></hr>
       <TaskForm onCreate={onCreate} tags={tags} defaultTag={activeTag} />
     </div>
   );

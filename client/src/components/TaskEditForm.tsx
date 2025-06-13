@@ -54,44 +54,47 @@ export default function TaskEditForm({
   ));
 
   return (
-    <form className="flex flex-col gap-1 mx-1.5">
-      <input
-        type="text"
-        placeholder="Task..."
-        value={taskName}
-        onChange={(e) => handleTaskNameChange(e.target.value)}
-      ></input>
-      <div className="m-w-1/6">
-        <DatePicker
-          dateFormat={"MM/dd"}
-          selected={date}
-          onChange={(date) => handleDateChange(date)}
-        />
-      </div>
-      <select
-        name="tags"
-        value={chosenTags[0]}
-        onChange={(e) => handleTagChange(e.target.value)}
-      >
-        <option value="">Select tag...</option>
-        {tagOptions}
-      </select>
-      <div className="flex flex-row">
-        <button
-          type="button"
-          className="btn-primary w-1/2 mr-0.5"
-          onClick={onCancel}
+    <>
+      <hr className="mx-5 my-2 text-slate-400"></hr>
+      <form className="flex flex-col gap-1 mx-1.5">
+        <input
+          type="text"
+          placeholder="Task..."
+          value={taskName}
+          onChange={(e) => handleTaskNameChange(e.target.value)}
+        ></input>
+        <div className="m-w-1/6">
+          <DatePicker
+            dateFormat={"MM/dd"}
+            selected={date}
+            onChange={(date) => handleDateChange(date)}
+          />
+        </div>
+        <select
+          name="tags"
+          value={chosenTags[0]}
+          onChange={(e) => handleTagChange(e.target.value)}
         >
-          Cancel
-        </button>
-        <button
-          type="button"
-          className="btn-primary w-1/2 ml-0.5"
-          onClick={handleSubmitClick}
-        >
-          Submit
-        </button>
-      </div>
-    </form>
+          <option value="">Select tag...</option>
+          {tagOptions}
+        </select>
+        <div className="flex flex-row">
+          <button
+            type="button"
+            className="btn-primary w-1/2 mr-0.5"
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="btn-primary w-1/2 ml-0.5"
+            onClick={handleSubmitClick}
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </>
   );
 }

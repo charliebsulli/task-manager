@@ -82,7 +82,7 @@ export default function TaskForm({
         {tagOptions}
       </select>
       <button type="button" className="btn-primary" onClick={handleCreateClick}>
-        Submit
+        Add task
       </button>
     </form>
   );

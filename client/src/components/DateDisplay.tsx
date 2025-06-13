@@ -4,5 +4,5 @@ export default function DateDisplay({ due }: { due: Date }) {
     const dateArr = due.toDateString().split(" ");
     return dateArr[1] + " " + dateArr[2];
   }
-  return <p className="flex-5/12 ml-1">{getPrettyDate(due)}</p>;
+  return <p className="flex-5/12 ml-1 text-slate-400">{getPrettyDate(due)}</p>;
 }

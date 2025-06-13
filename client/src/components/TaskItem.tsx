@@ -3,15 +3,16 @@ import { Task, TaskParams, Tag } from "../../../shared/types";
 import TaskEditForm from "./TaskEditForm";
 import DateDisplay from "./DateDisplay";
 import TaskCheckbox from "./TaskCheckbox";
+import { LuPenLine, LuTrash2 } from "react-icons/lu";
 
 function DeleteButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       type="button"
-      className="mr-1.5 text-red-300 hover:text-red-500 hover:bg-red-300 rounded px-1.5"
+      className="mx-3 text-red-300 hover:text-red-500 cursor-pointer scale-125"
       onClick={onClick}
     >
-      Delete
+      <LuTrash2 />
     </button>
   );
 }
@@ -20,10 +21,10 @@ function EditButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       type="button"
-      className="mr-4 text-slate-300 hover:text-slate-500 hover:bg-slate-300 rounded px-1.5"
+      className=" text-slate-300 hover:text-slate-500 cursor-pointer scale-125"
       onClick={onClick}
     >
-      Edit
+      <LuPenLine />
     </button>
   );
 }
@@ -84,7 +85,7 @@ export default function TaskItem({
   return (
     <>
       {!editing && (
-        <div className="flex flex-row">
+        <div className="flex flex-row py-0.5 group">
           <TaskCheckbox
             status={task.complete}
             onStatusChange={onStatusChange}
@@ -94,8 +95,10 @@ export default function TaskItem({
             <TagList tagNames={getTagNames(task.tags)} />
           </div>
           <DateDisplay due={task.due} />
-          {!editing && <EditButton onClick={handleEditClick} />}
-          <DeleteButton onClick={onDelete} />
+          <span className="scale-0 group-hover:scale-100">
+            {!editing && <EditButton onClick={handleEditClick} />}
+            <DeleteButton onClick={onDelete} />
+          </span>
         </div>
       )}
       {editing && (
