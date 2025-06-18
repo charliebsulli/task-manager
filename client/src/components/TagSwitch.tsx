@@ -28,7 +28,7 @@ export default function TagSwitch({
           <button
             type="button"
             onClick={onDelete}
-            className="text-slate-300 hover:text-slate-500 select-none"
+            className="text-slate-300 hover:text-slate-500 select-none mt-1 scale-115 px-1"
           >
             <LuTrash2 />
           </button>

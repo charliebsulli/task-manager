@@ -1,7 +1,10 @@
+import {
+  LuCalendarArrowUp,
+  LuCalendarClock,
+  LuCircleCheck,
+} from "react-icons/lu";
 import { useLogout } from "../api/auth/logout";
-import OverdueToggle from "./OverdueToggle";
-import SortByDueToggle from "./SortByDueToggle";
-import StatusToggle from "./StatusToggle";
+import IconToggleButton from "./IconToggleButton";
 
 export default function TaskHeader({
   showComplete,
@@ -37,23 +40,29 @@ export default function TaskHeader({
 
   // not sure it makes sense for the task header to contain all of these components
   return (
-    <div className="flex flex-row">
-      <h1 className="ml-1.5 mt-1 font-bold w-8/12">Tasks</h1>
-      <SortByDueToggle
-        sortByDue={sortByDue}
+    <div className="flex flex-row py-2">
+      <h1 className="ml-1.5 mt-2 font-bold w-10/12 text-2xl">Your Tasks</h1>
+      <IconToggleButton /* Sort by due date */
+        status={sortByDue}
         handleChange={handleSortByDueToggle}
+        icon={<LuCalendarArrowUp />}
+        tooltip="Sort by due date"
       />
-      <OverdueToggle
-        onlyOverdue={onlyOverdue}
+      <IconToggleButton /* Show only overdue tasks */
+        status={onlyOverdue}
         handleChange={handleOnlyOverdueToggle}
+        icon={<LuCalendarClock />}
+        tooltip="Overdue tasks"
       />
-      <StatusToggle
-        showComplete={showComplete}
+      <IconToggleButton /* Include completed tasks */
+        status={showComplete}
         handleChange={handleShowCompleteToggle}
+        icon={<LuCircleCheck />}
+        tooltip="Show completed tasks"
       />
       <button
         type="button"
-        className="btn-secondary mx-1.5 px-2"
+        className="btn-secondary mx-1.5 px-2 max-h-10"
         onClick={handleLogoutClick}
       >
         Logout

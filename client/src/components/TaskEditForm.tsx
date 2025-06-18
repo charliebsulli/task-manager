@@ -62,8 +62,9 @@ export default function TaskEditForm({
           placeholder="Task..."
           value={taskName}
           onChange={(e) => handleTaskNameChange(e.target.value)}
+          className="input-box"
         ></input>
-        <div className="m-w-1/6">
+        <div className="m-w-1/6 input-box">
           <DatePicker
             dateFormat={"MM/dd"}
             selected={date}
@@ -74,6 +75,7 @@ export default function TaskEditForm({
           name="tags"
           value={chosenTags[0]}
           onChange={(e) => handleTagChange(e.target.value)}
+          className="input-box"
         >
           <option value="">Select tag...</option>
           {tagOptions}

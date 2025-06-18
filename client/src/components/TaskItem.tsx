@@ -91,7 +91,9 @@ export default function TaskItem({
             onStatusChange={onStatusChange}
           />
           <div className="flex flex-row gap-1 flex-5/12">
-            <p className="">{task.name}</p>
+            <p className={task.complete ? "line-through text-slate-400" : ""}>
+              {task.name}
+            </p>
             <TagList tagNames={getTagNames(task.tags)} />
           </div>
           <DateDisplay due={task.due} />

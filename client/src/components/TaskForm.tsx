@@ -65,7 +65,7 @@ export default function TaskForm({
         placeholder="Task..."
         value={taskName}
         onChange={(e) => handleTaskNameChange(e.target.value)}
-        className="rounded px-1"
+        className="input-box"
       ></input>
       <div className="max-w-1/6 rounded px-1">
         <DatePicker
@@ -78,7 +78,7 @@ export default function TaskForm({
         name="tags"
         value={chosenTags[0]}
         onChange={(e) => handleTagChange(e.target.value)}
-        className="rounded px-1"
+        className="input-box"
       >
         <option value="">Select tag...</option>
         {tagOptions}

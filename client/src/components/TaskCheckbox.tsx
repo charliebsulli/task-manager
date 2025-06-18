@@ -1,9 +1,4 @@
-import {
-  LuCircle,
-  LuCircleCheckBig,
-  LuSquare,
-  LuSquareCheckBig,
-} from "react-icons/lu";
+import { LuSquare, LuSquareCheckBig } from "react-icons/lu";
 
 export default function TaskCheckbox({
   status,
