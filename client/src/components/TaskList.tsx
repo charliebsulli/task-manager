@@ -110,6 +110,7 @@ export default function TaskList({
           onEdit(_id, newTask);
         }}
         allTags={tags}
+        isOverdue={isOverdue(task)}
       />
     </div>
   ));

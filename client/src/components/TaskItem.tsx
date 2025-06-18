@@ -52,12 +52,14 @@ export default function TaskItem({
   onStatusChange,
   onEditSubmit,
   allTags,
+  isOverdue,
 }: {
   task: Task;
   onDelete: () => void;
   onStatusChange: () => void;
   onEditSubmit: (newParams: TaskParams) => void;
   allTags: Map<string, Tag>;
+  isOverdue: boolean;
 }) {
   const [editing, setEditing] = useState(false);
 
@@ -77,9 +79,6 @@ export default function TaskItem({
 
   function handleEditClick() {
     setEditing(!editing);
-
-    // if we're hiding the form it should reset
-    // the state of the form without changing anything
   }
 
   return (
@@ -96,7 +95,7 @@ export default function TaskItem({
             </p>
             <TagList tagNames={getTagNames(task.tags)} />
           </div>
-          <DateDisplay due={task.due} />
+          <DateDisplay due={task.due} isOverdue={isOverdue} />
           <span className="scale-0 group-hover:scale-100">
             {!editing && <EditButton onClick={handleEditClick} />}
             <DeleteButton onClick={onDelete} />
