@@ -19,7 +19,7 @@ describe("Tag integration tests", () => {
     {
       _id: "task2",
       name: "Test Task 2",
-      complete: true,
+      complete: false,
       tags: ["tag2"],
       due: new Date(),
       userId: "user1",
@@ -53,8 +53,10 @@ describe("Tag integration tests", () => {
 
     // and in the create task select menu
     // NOTE this will break if I hide the create task form by default
+    const selectMenu = screen.getByText("Select tags...");
+    await userEvent.click(selectMenu);
     expect(
-      screen.getByText("New Tag", { selector: "option" })
+      screen.getByText("New Tag", { selector: "span" })
     ).toBeInTheDocument();
   });
 
@@ -69,14 +71,15 @@ describe("Tag integration tests", () => {
     const createButton = screen.getByText(/Create/i);
     await userEvent.click(createButton);
 
+    screen.debug();
     // create a new task with that tag
     const taskInput = screen.getByPlaceholderText("Task...");
     await userEvent.type(taskInput, "New Task");
-    const dateInput = screen.getByPlaceholderText(/Due/);
-    await userEvent.type(dateInput, "6/1");
-    const tagSelect = screen.getByRole("combobox");
-    await userEvent.selectOptions(tagSelect, "New Tag");
-    const submit = screen.getByText(/submit/i);
+    const selectMenu = screen.getByText("Select tags...");
+    await userEvent.click(selectMenu);
+    const tagToSelect = screen.getByText("New Tag", { selector: "span" });
+    await userEvent.click(tagToSelect);
+    const submit = screen.getByText(/add task/i);
     await userEvent.click(submit);
 
     // check that the new task appears in the list
@@ -107,10 +110,11 @@ describe("Tag integration tests", () => {
     // NOTE: moving components around could break this test since we getAll
 
     // click on the first tag to filter by it
-    const tagButton = screen.getAllByText("Tag 1", { selector: "p" })[0];
+    const tagButton = screen.getByText("Tag 1", { selector: "p" });
     await userEvent.click(tagButton);
 
-    // only task 2 should be visible
+    screen.debug();
+    // only task 1 should be visible
     expect(screen.getByText("Test Task 1")).toBeInTheDocument();
     expect(screen.queryByText("Test Task 2")).not.toBeInTheDocument();
 

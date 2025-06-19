@@ -1,32 +1,19 @@
 import { useState } from "react";
 import { Task, TaskParams, Tag } from "../../../shared/types";
 import TaskEditForm from "./TaskEditForm";
-
-function Checkbox({
-  status,
-  onStatusChange,
-}: {
-  status: boolean;
-  onStatusChange: () => void;
-}) {
-  return (
-    <input
-      className="mx-2"
-      type="checkbox"
-      checked={status}
-      onChange={onStatusChange}
-    />
-  );
-}
+import DateDisplay from "./DateDisplay";
+import TaskCheckbox from "./TaskCheckbox";
+import { LuPenLine, LuTrash2 } from "react-icons/lu";
 
 function DeleteButton({ onClick }: { onClick: () => void }) {
   return (
     <button
+      aria-label="delete task"
       type="button"
-      className="mr-1.5 text-red-300 hover:text-red-500 hover:bg-red-300 rounded px-1.5"
+      className="mx-3 text-red-300 hover:text-red-500 cursor-pointer scale-125"
       onClick={onClick}
     >
-      Delete
+      <LuTrash2 />
     </button>
   );
 }
@@ -34,32 +21,30 @@ function DeleteButton({ onClick }: { onClick: () => void }) {
 function EditButton({ onClick }: { onClick: () => void }) {
   return (
     <button
+      aria-label="edit task"
       type="button"
-      className="mr-4 text-slate-300 hover:text-slate-500 hover:bg-slate-300 rounded px-1.5"
+      className="mt-1 text-slate-300 hover:text-slate-500 cursor-pointer scale-125"
       onClick={onClick}
     >
-      Edit
+      <LuPenLine />
     </button>
   );
-}
-
-function DueDateTime({ dueDateTime }: { dueDateTime: string }) {
-  return <p className="flex-5/12 ml-1">{dueDateTime}</p>;
 }
 
 function TagList({ tagNames }: { tagNames: string[] }) {
   const listTags = tagNames.map((tagName, idx) => (
     <TagItem key={idx} tagName={tagName} />
   ));
-  return <div className="flex flex-row gap-1">{listTags}</div>;
+  return <div className="flex flex-row gap-1 flex-wrap">{listTags}</div>;
 }
 
 function TagItem({ tagName }: { tagName: string }) {
   return (
-    <span className="bg-slate-300 rounded h-6">
-      <p data-testid="tag-on-task" className="mx-1">
-        {tagName}
-      </p>
+    <span
+      data-testid="tag-on-task"
+      className="rounded h-6 font-semibold inline-block text-nowrap px-1 bg-slate-50 text-slate-700"
+    >
+      {tagName}
     </span>
   );
 }
@@ -70,12 +55,14 @@ export default function TaskItem({
   onStatusChange,
   onEditSubmit,
   allTags,
+  isOverdue,
 }: {
   task: Task;
   onDelete: () => void;
   onStatusChange: () => void;
   onEditSubmit: (newParams: TaskParams) => void;
   allTags: Map<string, Tag>;
+  isOverdue: boolean;
 }) {
   const [editing, setEditing] = useState(false);
 
@@ -95,23 +82,27 @@ export default function TaskItem({
 
   function handleEditClick() {
     setEditing(!editing);
-
-    // if we're hiding the form it should reset
-    // the state of the form without changing anything
   }
 
   return (
     <>
       {!editing && (
-        <div className="flex flex-row">
-          <Checkbox status={task.complete} onStatusChange={onStatusChange} />
+        <div className="flex flex-row py-1.5 group shadow-2xs">
+          <TaskCheckbox
+            status={task.complete}
+            onStatusChange={onStatusChange}
+          />
           <div className="flex flex-row gap-1 flex-5/12">
-            <p className="">{task.name}</p>
+            <p className={task.complete ? "line-through text-slate-400" : ""}>
+              {task.name}
+            </p>
             <TagList tagNames={getTagNames(task.tags)} />
           </div>
-          <DueDateTime dueDateTime={task.due.toDateString()} />
-          {!editing && <EditButton onClick={handleEditClick} />}
-          <DeleteButton onClick={onDelete} />
+          <DateDisplay due={task.due} isOverdue={isOverdue} />
+          <span className="scale-0 group-hover:scale-100">
+            {!editing && <EditButton onClick={handleEditClick} />}
+            <DeleteButton onClick={onDelete} />
+          </span>
         </div>
       )}
       {editing && (

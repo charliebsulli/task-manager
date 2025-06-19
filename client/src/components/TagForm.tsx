@@ -26,9 +26,13 @@ export default function TagForm({
         placeholder="Add tag..."
         value={tagName}
         onChange={(e) => handleTagNameChange(e.target.value)}
-        className="mr-3 flex-3/5 min-w-0"
+        className="mr-3 flex-3/5 min-w-0 rounded px-0.5 placeholder-slate-500"
       ></input>
-      <button className="btn-primary" type="button" onClick={handleCreateClick}>
+      <button
+        className="btn-secondary"
+        type="button"
+        onClick={handleCreateClick}
+      >
         <p className="mx-1">Create</p>
       </button>
     </form>

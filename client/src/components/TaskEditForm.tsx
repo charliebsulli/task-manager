@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { TaskParams, Tag } from "../../../shared/types";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// import "react-datepicker/dist/react-datepicker.css";
+import TagSelectDropdown from "./TagSelectDropdown";
 
 export default function TaskEditForm({
   startingTask,
@@ -16,7 +17,7 @@ export default function TaskEditForm({
 }) {
   const [taskName, setTaskName] = useState(startingTask.name);
   const [date, setDate] = useState(startingTask.due);
-  const [chosenTags, setChosenTags] = useState(startingTask.tags);
+  const [chosenTags, setChosenTags] = useState(new Set(startingTask.tags));
 
   function handleTaskNameChange(newTaskName: string) {
     setTaskName(newTaskName);
@@ -27,7 +28,17 @@ export default function TaskEditForm({
   // }
 
   function handleTagChange(tagId: string) {
-    setChosenTags([tagId]);
+    // if tagId is in the set, remove it
+    // otherwise, add it
+    if (chosenTags.has(tagId)) {
+      // immutability
+      const newChosenTags = new Set(chosenTags);
+      newChosenTags.delete(tagId);
+      setChosenTags(newChosenTags);
+    } else {
+      const newChosenTags = new Set(chosenTags.add(tagId));
+      setChosenTags(newChosenTags);
+    }
   }
 
   function handleDateChange(date: Date | null) {
@@ -41,7 +52,7 @@ export default function TaskEditForm({
   function handleSubmitClick() {
     const params: TaskParams = {
       name: taskName,
-      tags: chosenTags,
+      tags: [...chosenTags].sort(),
       due: date,
     };
     onSubmit(params);
@@ -54,44 +65,45 @@ export default function TaskEditForm({
   ));
 
   return (
-    <form className="flex flex-col gap-1 mx-1.5">
-      <input
-        type="text"
-        placeholder="Task..."
-        value={taskName}
-        onChange={(e) => handleTaskNameChange(e.target.value)}
-      ></input>
-      <div className="m-w-1/6">
-        <DatePicker
-          dateFormat={"MM/dd"}
-          selected={date}
-          onChange={(date) => handleDateChange(date)}
+    <>
+      <hr className="mx-5 my-2 text-slate-400"></hr>
+      <form className="flex flex-col gap-1 mx-1.5">
+        <input
+          type="text"
+          placeholder="Task..."
+          value={taskName}
+          onChange={(e) => handleTaskNameChange(e.target.value)}
+          className="input-box"
+        ></input>
+        <div className="m-w-1/6 input-box">
+          <DatePicker
+            dateFormat={"MM/dd"}
+            selected={date}
+            onChange={(date) => handleDateChange(date)}
+          />
+        </div>
+        <TagSelectDropdown
+          tags={tags}
+          chosenTags={chosenTags}
+          onChange={handleTagChange}
         />
-      </div>
-      <select
-        name="tags"
-        value={chosenTags[0]}
-        onChange={(e) => handleTagChange(e.target.value)}
-      >
-        <option value="">Select tag...</option>
-        {tagOptions}
-      </select>
-      <div className="flex flex-row">
-        <button
-          type="button"
-          className="btn-primary w-1/2 mr-0.5"
-          onClick={onCancel}
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          className="btn-primary w-1/2 ml-0.5"
-          onClick={handleSubmitClick}
-        >
-          Submit
-        </button>
-      </div>
-    </form>
+        <div className="flex flex-row">
+          <button
+            type="button"
+            className="btn-secondary w-1/2 mr-0.5"
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="btn-primary w-1/2 ml-0.5"
+            onClick={handleSubmitClick}
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </>
   );
 }
