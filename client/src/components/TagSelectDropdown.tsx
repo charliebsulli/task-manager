@@ -11,11 +11,14 @@ export default function TagSelectDropdown({
   onChange: (tagId: string) => void;
 }) {
   const [open, setOpen] = useState(false);
-  const dropdownRef = useRef(null); // useRef?
+  const dropdownRef = useRef<HTMLDivElement>(null); // useRef?
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setOpen(false);
       }
     }
@@ -30,12 +33,10 @@ export default function TagSelectDropdown({
   }, [open]);
 
   function Option({
-    taskId,
     taskName,
     isChecked,
     onChange,
   }: {
-    taskId: string;
     taskName: string;
     isChecked: boolean;
     onChange: () => void;
@@ -75,7 +76,6 @@ export default function TagSelectDropdown({
   const tagOptions = Array.from(tags, ([_id, tag]) => (
     <div key={_id} className="">
       <Option
-        taskId={_id}
         taskName={tag.name}
         isChecked={chosenTags.has(_id)}
         onChange={() => onChange(_id)}
