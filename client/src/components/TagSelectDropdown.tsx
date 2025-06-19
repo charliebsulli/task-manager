@@ -49,7 +49,7 @@ export default function TagSelectDropdown({
             onChange={onChange}
             className="mr-1"
           ></input>
-          {taskName}
+          <span>{taskName}</span>
         </div>
       </label>
     );

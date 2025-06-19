@@ -8,6 +8,7 @@ import { LuPenLine, LuTrash2 } from "react-icons/lu";
 function DeleteButton({ onClick }: { onClick: () => void }) {
   return (
     <button
+      aria-label="delete task"
       type="button"
       className="mx-3 text-red-300 hover:text-red-500 cursor-pointer scale-125"
       onClick={onClick}
@@ -20,6 +21,7 @@ function DeleteButton({ onClick }: { onClick: () => void }) {
 function EditButton({ onClick }: { onClick: () => void }) {
   return (
     <button
+      aria-label="edit task"
       type="button"
       className="mt-1 text-slate-300 hover:text-slate-500 cursor-pointer scale-125"
       onClick={onClick}

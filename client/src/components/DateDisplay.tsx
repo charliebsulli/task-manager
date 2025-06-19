@@ -1,3 +1,9 @@
+// show abbreviated month and numerical date only
+export function getPrettyDate(due: Date) {
+  const dateArr = due.toDateString().split(" ");
+  return dateArr[1] + " " + dateArr[2];
+}
+
 export default function DateDisplay({
   due,
   isOverdue,
@@ -5,11 +11,6 @@ export default function DateDisplay({
   due: Date;
   isOverdue: boolean;
 }) {
-  // show abbreviated month and numerical date only
-  function getPrettyDate(due: Date) {
-    const dateArr = due.toDateString().split(" ");
-    return dateArr[1] + " " + dateArr[2];
-  }
   return (
     <p
       className={

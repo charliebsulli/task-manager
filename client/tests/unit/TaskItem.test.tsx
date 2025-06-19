@@ -1,4 +1,5 @@
 import TaskItem from "../../src/components/TaskItem";
+import { getPrettyDate } from "@/components/DateDisplay";
 import { Tag, Task } from "../../../shared/types";
 import { render, screen } from "../test-utils";
 import userEvent from "@testing-library/user-event";
@@ -40,6 +41,7 @@ describe("TaskItem component", () => {
     onStatusChange,
     onEditSubmit,
     allTags,
+    isOverdue: false,
   };
 
   beforeEach(() => {
@@ -50,7 +52,7 @@ describe("TaskItem component", () => {
     render(<TaskItem {...props} />);
 
     expect(screen.getByText(task.name)).toBeInTheDocument();
-    expect(screen.getByText(task.due.toDateString())).toBeInTheDocument();
+    expect(screen.getByText(getPrettyDate(task.due))).toBeInTheDocument();
   });
 
   test("Renders tag names", () => {
@@ -74,7 +76,9 @@ describe("TaskItem component", () => {
   test("Delete button renders and can be clicked", async () => {
     render(<TaskItem {...props} />);
 
-    const deleteButton = screen.getByText("Delete");
+    const taskItem = screen.getByText("Test Task");
+    await userEvent.hover(taskItem);
+    const deleteButton = screen.getByRole("button", { name: "delete task" });
     await userEvent.click(deleteButton);
     expect(onDelete).toHaveBeenCalledTimes(1);
   });
@@ -84,7 +88,9 @@ describe("TaskItem component", () => {
 
     expect(screen.queryByText(/Form/)).toBeNull();
 
-    const editButton = screen.getByText("Edit");
+    const taskItem = screen.getByText("Test Task");
+    await userEvent.hover(taskItem);
+    const editButton = screen.getByRole("button", { name: "edit task" });
     await userEvent.click(editButton);
 
     expect(screen.getByText(/Form/)).toBeInTheDocument();

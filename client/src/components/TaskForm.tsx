@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { TaskParams, Tag } from "../../../shared/types";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// import "react-datepicker/dist/react-datepicker.css";
 import MultiSelectDropdown from "./TagSelectDropdown";
 import TagSelectDropdown from "./TagSelectDropdown";
 

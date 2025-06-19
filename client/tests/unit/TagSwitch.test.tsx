@@ -51,7 +51,7 @@ describe("TagSwitch component", () => {
       />
     );
 
-    const deleteButton = screen.getByText("X");
+    const deleteButton = screen.getByRole("button");
     await userEvent.click(deleteButton);
 
     expect(onDelete).toHaveBeenCalledTimes(1);
