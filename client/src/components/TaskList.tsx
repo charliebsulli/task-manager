@@ -127,7 +127,7 @@ export default function TaskList({
       />
       {listItems}
       <hr className="mx-5 my-2 text-slate-400"></hr>
-      <TaskForm onCreate={onCreate} tags={tags} defaultTag={activeTag} />
+      <TaskForm onCreate={onCreate} tags={tags} />
     </div>
   );
 }

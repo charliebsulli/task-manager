@@ -58,12 +58,6 @@ export default function TaskEditForm({
     onSubmit(params);
   }
 
-  const tagOptions = Array.from(tags, ([_id, tag]) => (
-    <option key={_id} value={_id}>
-      {tag.name}
-    </option>
-  ));
-
   return (
     <>
       <hr className="mx-5 my-2 text-slate-400"></hr>

@@ -2,6 +2,7 @@ export default function IconToggleButton({
   status,
   handleChange,
   icon,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   tooltip,
 }: {
   status: boolean;
