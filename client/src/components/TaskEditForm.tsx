@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TaskParams, Tag } from "../../../shared/types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import TagSelectDropdown from "./TagSelectDropdown";
 
 export default function TaskEditForm({
   startingTask,
@@ -16,7 +17,7 @@ export default function TaskEditForm({
 }) {
   const [taskName, setTaskName] = useState(startingTask.name);
   const [date, setDate] = useState(startingTask.due);
-  const [chosenTags, setChosenTags] = useState(startingTask.tags);
+  const [chosenTags, setChosenTags] = useState(new Set(startingTask.tags));
 
   function handleTaskNameChange(newTaskName: string) {
     setTaskName(newTaskName);
@@ -27,7 +28,17 @@ export default function TaskEditForm({
   // }
 
   function handleTagChange(tagId: string) {
-    setChosenTags([tagId]);
+    // if tagId is in the set, remove it
+    // otherwise, add it
+    if (chosenTags.has(tagId)) {
+      // immutability
+      const newChosenTags = new Set(chosenTags);
+      newChosenTags.delete(tagId);
+      setChosenTags(newChosenTags);
+    } else {
+      const newChosenTags = new Set(chosenTags.add(tagId));
+      setChosenTags(newChosenTags);
+    }
   }
 
   function handleDateChange(date: Date | null) {
@@ -41,7 +52,7 @@ export default function TaskEditForm({
   function handleSubmitClick() {
     const params: TaskParams = {
       name: taskName,
-      tags: chosenTags,
+      tags: [...chosenTags].sort(),
       due: date,
     };
     onSubmit(params);
@@ -71,15 +82,11 @@ export default function TaskEditForm({
             onChange={(date) => handleDateChange(date)}
           />
         </div>
-        <select
-          name="tags"
-          value={chosenTags[0]}
-          onChange={(e) => handleTagChange(e.target.value)}
-          className="input-box"
-        >
-          <option value="">Select tag...</option>
-          {tagOptions}
-        </select>
+        <TagSelectDropdown
+          tags={tags}
+          chosenTags={chosenTags}
+          onChange={handleTagChange}
+        />
         <div className="flex flex-row">
           <button
             type="button"

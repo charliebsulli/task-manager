@@ -33,15 +33,16 @@ function TagList({ tagNames }: { tagNames: string[] }) {
   const listTags = tagNames.map((tagName, idx) => (
     <TagItem key={idx} tagName={tagName} />
   ));
-  return <div className="flex flex-row gap-1">{listTags}</div>;
+  return <div className="flex flex-row gap-1 flex-wrap">{listTags}</div>;
 }
 
 function TagItem({ tagName }: { tagName: string }) {
   return (
-    <span className="bg-slate-300 rounded h-6">
-      <p data-testid="tag-on-task" className="mx-1">
-        {tagName}
-      </p>
+    <span
+      data-testid="tag-on-task"
+      className="rounded h-6 font-semibold inline-block text-nowrap px-1 bg-slate-50 text-slate-700"
+    >
+      {tagName}
     </span>
   );
 }

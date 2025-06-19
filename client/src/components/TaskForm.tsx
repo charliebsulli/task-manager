@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { TaskParams, Tag } from "../../../shared/types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import MultiSelectDropdown from "./TagSelectDropdown";
+import TagSelectDropdown from "./TagSelectDropdown";
 
 export default function TaskForm({
   onCreate,
@@ -14,13 +16,14 @@ export default function TaskForm({
 }) {
   const [taskName, setTaskName] = useState("");
   const [date, setDate] = useState(new Date());
-  const [chosenTags, setChosenTags] = useState([defaultTag]);
+  // set of tagIds of selected tags in menu
+  const [chosenTags, setChosenTags] = useState(new Set<string>());
 
   // when defaultTag changes, must useEffect to update chosenTags
   // otherwise component will not re-render with new defaultTag
-  useEffect(() => {
-    setChosenTags([defaultTag]);
-  }, [defaultTag]);
+  // useEffect(() => {
+  //   setChosenTags([defaultTag]);
+  // }, [defaultTag]);
 
   function handleTaskNameChange(newTaskName: string) {
     setTaskName(newTaskName);
@@ -40,23 +43,28 @@ export default function TaskForm({
     }
     const params: TaskParams = {
       name: taskName,
-      tags: chosenTags,
+      tags: [...chosenTags].sort(), // display tags in consistent order
       due: date,
     };
     onCreate(params);
     setTaskName("");
     setDate(new Date());
+    setChosenTags(new Set<string>());
   }
 
   function handleTagChange(tagId: string) {
-    setChosenTags([tagId]);
+    // if tagId is in the set, remove it
+    // otherwise, add it
+    if (chosenTags.has(tagId)) {
+      // immutability
+      const newChosenTags = new Set(chosenTags);
+      newChosenTags.delete(tagId);
+      setChosenTags(newChosenTags);
+    } else {
+      const newChosenTags = new Set(chosenTags.add(tagId));
+      setChosenTags(newChosenTags);
+    }
   }
-
-  const tagOptions = Array.from(tags, ([_id, tag]) => (
-    <option key={_id} value={_id}>
-      {tag.name}
-    </option>
-  ));
 
   return (
     <form className="flex flex-col gap-1 mx-1.5">
@@ -74,15 +82,11 @@ export default function TaskForm({
           onChange={(date) => handleDateChange(date)}
         />
       </div>
-      <select
-        name="tags"
-        value={chosenTags[0]}
-        onChange={(e) => handleTagChange(e.target.value)}
-        className="input-box"
-      >
-        <option value="">Select tag...</option>
-        {tagOptions}
-      </select>
+      <TagSelectDropdown
+        tags={tags}
+        chosenTags={chosenTags}
+        onChange={handleTagChange}
+      />
       <button type="button" className="btn-primary" onClick={handleCreateClick}>
         Add task
       </button>
