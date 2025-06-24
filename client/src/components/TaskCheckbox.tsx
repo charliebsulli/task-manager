@@ -10,6 +10,7 @@ export default function TaskCheckbox({
   return (
     <label className="cursor-pointer">
       <input
+        aria-label="task checkbox"
         className="peer sr-only" // select-none w-4 h-4 border-1 m-1 rounded-2xl text-slate-400 checked:bg-emerald-400"
         type="checkbox"
         checked={status}

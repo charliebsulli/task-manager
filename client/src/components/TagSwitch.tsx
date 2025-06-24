@@ -27,6 +27,7 @@ export default function TagSwitch({
         <label className="scale-0 group-hover:scale-100">
           <button
             type="button"
+            aria-label="delete tag"
             onClick={onDelete}
             className="text-slate-300 hover:text-slate-500 select-none mt-1 scale-115 px-1"
           >

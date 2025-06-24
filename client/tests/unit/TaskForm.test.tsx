@@ -17,6 +17,11 @@ describe("TaskForm component", () => {
 
   const onCreate = vi.fn();
 
+  // given mm/dd date, make a date object
+  // as expected to be produced from
+  // react datepicker
+  // const makeDate: (date: string) => {};
+
   test("Task name input updates with user input", async () => {
     render(<TaskForm onCreate={onCreate} tags={tags} />);
 
@@ -29,31 +34,37 @@ describe("TaskForm component", () => {
   test("Date input updates with user input", async () => {
     render(<TaskForm onCreate={onCreate} tags={tags} />);
 
-    const dateInput = screen.getByPlaceholderText(/Due/);
+    const dateInput = screen.getAllByRole("textbox")[1];
+    await userEvent.clear(dateInput);
     await userEvent.type(dateInput, "12/12");
 
     expect(dateInput).toHaveValue("12/12");
   });
 
-  test("Tag dropdown displays tag options", () => {
+  test("Tag dropdown displays tag options", async () => {
     render(<TaskForm onCreate={onCreate} tags={tags} />);
-
-    // select menu has role combobox
-    const tagSelect = screen.getByRole("combobox");
-    expect(tagSelect).toHaveValue(""); // default option has value ""
+    const tagSelect = screen.getByText("Select tags...");
+    await userEvent.click(tagSelect);
 
     // check that options are in the select menu
-    expect(tagSelect).toHaveTextContent("tag1");
-    expect(tagSelect).toHaveTextContent("tag2");
+    screen.getByText("tag1");
+    screen.getByText("tag2");
   });
 
   test("User can select a tag from the dropdown", async () => {
     render(<TaskForm onCreate={onCreate} tags={tags} />);
 
-    const tagSelect = screen.getByRole("combobox");
-    await userEvent.selectOptions(tagSelect, "tagId1");
+    const tagSelect = screen.getByText("Select tags...");
+    await userEvent.click(tagSelect);
 
-    expect(tagSelect).toHaveValue("tagId1");
+    const tag1 = screen.getByText("tag1");
+    await userEvent.click(tag1);
+
+    expect(screen.queryByText("Select tags...")).toBeNull();
+
+    await userEvent.click(screen.getAllByText("tag1")[0]);
+
+    expect(screen.getByText("tag1"));
   });
 
   test("Submit button calls onCreate with task params", async () => {
@@ -62,18 +73,20 @@ describe("TaskForm component", () => {
     // fill out the form
     const taskInput = screen.getByPlaceholderText("Task...");
     await userEvent.type(taskInput, "New Task");
-    const dateInput = screen.getByPlaceholderText(/Due/);
-    await userEvent.type(dateInput, "12/12");
-    const tagSelect = screen.getByRole("combobox");
-    await userEvent.selectOptions(tagSelect, "tagId1");
+
+    const tagSelect = screen.getByText("Select tags...");
+    await userEvent.click(tagSelect);
+
+    const tag1 = screen.getByText("tag1");
+    await userEvent.click(tag1);
 
     // click the submit button
-    const submitButton = screen.getByRole("button", { name: /Submit/ });
+    const submitButton = screen.getByRole("button", { name: /add task/i });
     await userEvent.click(submitButton);
     expect(onCreate).toHaveBeenCalledWith({
       name: "New Task",
       tags: ["tagId1"],
-      due: "12/12",
+      due: expect.any(Date),
     });
   });
 });
