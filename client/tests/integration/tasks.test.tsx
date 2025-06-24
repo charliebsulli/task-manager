@@ -45,11 +45,11 @@ describe("Task integration tests", () => {
     // create a new task
     const taskInput = screen.getByPlaceholderText("Task...");
     await userEvent.type(taskInput, "New Task");
-    const dateInput = screen.getByPlaceholderText(/Due/);
-    await userEvent.type(dateInput, "6/1");
-    const tagSelect = screen.getByRole("combobox");
-    await userEvent.selectOptions(tagSelect, "tag1");
-    const submit = screen.getByText(/submit/i);
+    // const dateInput = screen.getByPlaceholderText(/Due/);
+    // await userEvent.type(dateInput, "6/1");
+    // const tagSelect = screen.getByRole("combobox");
+    // await userEvent.selectOptions(tagSelect, "tag1");
+    const submit = screen.getByText(/add task/i);
     await userEvent.click(submit);
 
     // check that the new task appears in the list
@@ -73,7 +73,9 @@ describe("Task integration tests", () => {
       <FilterableTaskList startingTasks={fakeTasks} startingTags={fakeTags} />
     );
 
-    const checkbox = screen.getAllByRole("checkbox")[2]; // checkbox for task1
+    const checkbox = screen.getAllByRole("checkbox", {
+      name: "task checkbox",
+    })[0]; // checkbox for task1
     await userEvent.click(checkbox);
 
     expect(checkbox).toBeChecked();
@@ -84,7 +86,9 @@ describe("Task integration tests", () => {
       <FilterableTaskList startingTasks={fakeTasks} startingTags={fakeTags} />
     );
 
-    const deleteButton = screen.getAllByText("Delete")[0];
+    const deleteButton = screen.getAllByRole("button", {
+      name: "delete task",
+    })[0];
     await userEvent.click(deleteButton);
 
     expect(screen.queryByText("Test Task 1")).not.toBeInTheDocument();

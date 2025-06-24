@@ -71,7 +71,6 @@ describe("Tag integration tests", () => {
     const createButton = screen.getByText(/Create/i);
     await userEvent.click(createButton);
 
-    screen.debug();
     // create a new task with that tag
     const taskInput = screen.getByPlaceholderText("Task...");
     await userEvent.type(taskInput, "New Task");
@@ -95,7 +94,9 @@ describe("Tag integration tests", () => {
     );
 
     // delete the first tag
-    const deleteButton = screen.getAllByText("X")[0];
+    const deleteButton = screen.getAllByRole("button", {
+      name: "delete tag",
+    })[0];
     await userEvent.click(deleteButton);
 
     // the tag should not exist anymore
@@ -113,15 +114,17 @@ describe("Tag integration tests", () => {
     const tagButton = screen.getByText("Tag 1", { selector: "p" });
     await userEvent.click(tagButton);
 
-    screen.debug();
     // only task 1 should be visible
-    expect(screen.getByText("Test Task 1")).toBeInTheDocument();
-    expect(screen.queryByText("Test Task 2")).not.toBeInTheDocument();
+
+    // visiblity is controlled by Tailwind CSS classes many ancestors up,
+    // so we ensure the parent of the task has the correct class
+    expect(screen.getByText("Test Task 1").closest(".visible")).not.toBeNull();
+    expect(screen.getByText("Test Task 2").closest(".collapse")).not.toBeNull();
 
     // clicking the tag again should clear the filter
     await userEvent.click(tagButton);
-    expect(screen.getByText("Test Task 1")).toBeInTheDocument();
-    expect(screen.getByText("Test Task 2")).toBeInTheDocument();
+    expect(screen.getByText("Test Task 1").closest(".visible")).not.toBeNull();
+    expect(screen.getByText("Test Task 2").closest(".visible")).not.toBeNull();
   });
 
   test("Filter by tag then select a different tag", async () => {
@@ -133,14 +136,14 @@ describe("Tag integration tests", () => {
     const tag1Button = screen.getAllByText("Tag 1", { selector: "p" })[0];
     await userEvent.click(tag1Button);
 
-    // only task 2 should be visible
-    expect(screen.getByText("Test Task 1")).toBeInTheDocument();
-    expect(screen.queryByText("Test Task 2")).not.toBeInTheDocument();
+    // only task 1 should be visible
+    expect(screen.getByText("Test Task 1").closest(".visible")).not.toBeNull();
+    expect(screen.getByText("Test Task 2").closest(".collapse")).not.toBeNull();
 
     // clicking the other tag should show both tasks
     const tag2Button = screen.getAllByText("Tag 2", { selector: "p" })[0];
     await userEvent.click(tag2Button);
-    expect(screen.getByText("Test Task 1")).toBeInTheDocument();
-    expect(screen.getByText("Test Task 2")).toBeInTheDocument();
+    expect(screen.getByText("Test Task 1").closest(".visible")).not.toBeNull();
+    expect(screen.getByText("Test Task 2").closest(".visible")).not.toBeNull();
   });
 });
