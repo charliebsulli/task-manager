@@ -9,7 +9,7 @@
     "lint": "next lint",
     "test": "vitest",
     "test-run": "vitest run",
-    "coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.76.1",
