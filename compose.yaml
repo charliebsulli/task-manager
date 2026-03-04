@@ -3,6 +3,8 @@ services:
     build:
       context: . # build needs shared folder
       dockerfile: client/Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://localhost:8080
     ports:
       - 3000:3000 # frontend exposes port 3000, bind host port 3000 to that
     depends_on:
