@@ -29,7 +29,7 @@ export default function LoginForm({ register }: { register: boolean }) {
           // redirect to login
           router.push("/auth/login");
         },
-      }
+      },
     );
   }
 
@@ -42,7 +42,19 @@ export default function LoginForm({ register }: { register: boolean }) {
           // redirect to homepage
           router.push("/");
         },
-      }
+      },
+    );
+  }
+
+  function demoLogin() {
+    loginMutation.mutate(
+      {
+        username: "demo",
+        password: "demopassword",
+      },
+      {
+        onSuccess: () => router.push("/"),
+      },
     );
   }
 
@@ -58,6 +70,14 @@ export default function LoginForm({ register }: { register: boolean }) {
     return (
       <button type="button" className="btn-primary" onClick={submitLogin}>
         Login
+      </button>
+    );
+  }
+
+  function DemoLoginButton() {
+    return (
+      <button type="button" className="btn-secondary" onClick={demoLogin}>
+        Demo login (no credentials required)
       </button>
     );
   }
@@ -100,6 +120,8 @@ export default function LoginForm({ register }: { register: boolean }) {
         onChange={(e) => onPasswordChange(e.target.value)}
       ></input>
       {register ? <RegisterButton /> : <LoginButton />}
+      <DemoLoginButton />
+
       {register ? <LoginRedirect /> : <RegisterRedirect />}
     </div>
   );
